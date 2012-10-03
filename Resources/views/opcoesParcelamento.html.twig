@@ -1,0 +1,31 @@
+<table class="table">
+    <tr>
+        {% for i in 1..colunas %}
+        <th>Parcelas</th>
+        <th>Valor Parcela</th>
+        <th>Juros</th>
+        {% endfor %}
+    </tr>
+{% for opcao in opcoesParcelamento %}
+    {% if loop.index % colunas == 1 %}
+    <tr>
+    {% endif %}
+    <td>
+        {{ opcao.parcelas }}x iguais
+    </td>
+    <td>
+        R$ {{ opcao.valor|number_format(2,',', '.') }}
+    </td>
+    <td>
+        {% if opcao.juros is defined %}
+            com juros de {{ opcao.juros }}
+        {% else %}
+            sem juros
+        {% endif %}
+
+    </td>
+    {% if loop.index % colunas == 0 %}
+    </tr>
+    {% endif %}
+{% endfor %}
+</table>
