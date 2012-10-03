@@ -58,4 +58,13 @@ class ParcelamentoUtils
         return $p;
 
     }
+
+    static public function choices($opcoesParcelamento){
+        $choices = array();
+        foreach ($opcoesParcelamento as $opcao) {
+            $choices[$opcao['parcelas']] = $opcao['parcelas'] . ' x R$ ' . number_format($opcao['valor'],2,',','.') .
+                (isset($opcao['juros'])?' ('.$opcao['juros'].')':' sem juros');
+        }
+        return $choices;
+    }
 }
