@@ -2,9 +2,9 @@
 <table class="table table-condensed js_resumida">
     <tr>
         {% for i in 1..colunas %}
-        <th>Parcelas</th>
-        <th>Valor Parcela</th>
-        <th>Juros</th>
+            <th>Parcelas</th>
+            <th>Valor Parcela</th>
+            <th>Juros</th>
         {% endfor %}
     </tr>
 {% for parcela,opcao in opcoesParcelamento %}
@@ -32,7 +32,7 @@
 </table>
 {% if mostrarLinkVerTudo == true %}
     <table class="table table-condensed js_completa" style="display: none;">
-        <tr>
+        <tr class="">
             {% for i in 1..colunas %}
                 <th>Parcelas</th>
                 <th>Valor Parcela</th>
@@ -63,28 +63,6 @@
         {% endfor %}
     </table>
     <a href="#" class="js_bfos_ver_todas_opcoes_parcelamento">{{ 'Ver todas opções de parcelamento'|trans }}</a>
-    <script type="text/javascript">
-        require(['jquery'], function($){
-            $(document).ready(function($){
-
-                var $body = $('body');
-                if(!$body.data('js_bfos_ver_todas_opcoes_parcelamento_bound')){
-                    $body.delegate('.js_bfos_ver_todas_opcoes_parcelamento', 'click', function(e){
-                        e.preventDefault();
-                        var $wrapper = $(this).closest('.bfos_opcoes_parcelamento');
-                        $wrapper.find('.js_resumida').toggle();
-                        $wrapper.find('.js_completa').toggle();
-                        if($(this).text()=='Ver todas opções de parcelamento'){
-                            $(this).text('Mostrar poucas opções de parcelamento');
-                        } else {
-                            $(this).text('Ver todas opções de parcelamento');
-                        }
-                    });
-                    $body.data('js_bfos_ver_todas_opcoes_parcelamento_bound', true);
-                }
-
-            });
-        });
-    </script>
+    {%  include 'BFOSPagamentoBundle::opcoesParcelamento_js.html.twig' %}
 {% endif %}
 </div>

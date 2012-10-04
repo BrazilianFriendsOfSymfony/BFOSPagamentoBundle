@@ -1,0 +1,23 @@
+<script type="text/javascript">
+    require(['jquery'], function($){
+        $(document).ready(function($){
+
+            var $body = $('body');
+            if(!$body.data('js_bfos_ver_todas_opcoes_parcelamento_bound')){
+                $body.delegate('.js_bfos_ver_todas_opcoes_parcelamento', 'click', function(e){
+                    e.preventDefault();
+                    var $wrapper = $(this).closest('.bfos_opcoes_parcelamento');
+                    $wrapper.find('.js_resumida').toggle();
+                    $wrapper.find('.js_completa').toggle();
+                    if($(this).text()=='Ver todas opções de parcelamento'){
+                        $(this).text('Mostrar poucas opções de parcelamento');
+                    } else {
+                        $(this).text('Ver todas opções de parcelamento');
+                    }
+                });
+                $body.data('js_bfos_ver_todas_opcoes_parcelamento_bound', true);
+            }
+
+        });
+    });
+</script>

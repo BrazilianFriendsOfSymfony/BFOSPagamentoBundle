@@ -44,7 +44,9 @@ class TwigExtension extends \Twig_Extension
         $defaults = array(
             'colunas' => 2,
             'mostrarParcelas' => array(),
-            'mostrarLinkVerTudo' =>  false
+            'mostrarLinkVerTudo' =>  false,
+            'view' => 'table',
+            'template' => false
         );
         $opcoes = array_merge($defaults, $opcoes);
         $colunas = $opcoes['colunas'];
@@ -61,7 +63,9 @@ class TwigExtension extends \Twig_Extension
 
         }
 
-        return $this->container->get('twig')->render('BFOSPagamentoBundle::opcoesParcelamento.html.twig',
+        $template = $opcoes['template'] ? $opcoes['template'] : 'BFOSPagamentoBundle::opcoesParcelamento_view_'.$opcoes['view'].'.html.twig';
+
+        return $this->container->get('twig')->render($template,
             array('opcoesParcelamento'=>$opcoesParcelamento,
                 'colunas'=>$colunas,
                 'quantidadePorColuna'=>$quantidadePorColuna,

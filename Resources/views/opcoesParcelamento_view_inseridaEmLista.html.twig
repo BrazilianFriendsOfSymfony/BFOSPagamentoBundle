@@ -1,0 +1,45 @@
+<div class="bfos_opcoes_parcelamento inseridaEmLista">
+<div class="js_resumida">
+{% for parcela,opcao in opcoesParcelamento %}
+    {% if colunas == 1 or loop.index % colunas == 1 %}
+    <div>
+    {% endif %}
+    <span class="opcap_parcelamento">
+        {{ opcao.parcelas }} x iguais de R$ {{ opcao.valor|number_format(2,',', '.') }}
+        {% if opcao.juros is defined %}
+            ({{ opcao.juros }})
+        {% else %}
+            (sem juros)
+        {% endif %}
+
+    </span>
+    {% if colunas == 1 or loop.index % colunas == 0 %}
+    </div>
+    {% endif %}
+{% endfor %}
+</div>
+{% if mostrarLinkVerTudo == true %}
+    <div class="table table-condensed js_completa" style="display: none;">
+
+        {% for parcela,opcao in opcoesParcelamentoOriginais %}
+            {% if colunas == 1 or loop.index % colunas == 1 %}
+                <div>
+            {% endif %}
+            <span class="opcap_parcelamento">
+                {{ opcao.parcelas }} x iguais de R$ {{ opcao.valor|number_format(2,',', '.') }}
+                {% if opcao.juros is defined %}
+                    ({{ opcao.juros }})
+                {% else %}
+                    (sem juros)
+                {% endif %}
+
+            </span>
+            {% if colunas == 1 or loop.index % colunas == 0 %}
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <a href="#" class="js_bfos_ver_todas_opcoes_parcelamento">{{ 'Ver todas opções de parcelamento'|trans }}</a>
+    {%  include 'BFOSPagamentoBundle::opcoesParcelamento_js.html.twig' %}
+{% endif %}
+</div>
