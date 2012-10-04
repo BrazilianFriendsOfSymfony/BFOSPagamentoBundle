@@ -1,4 +1,5 @@
-<table class="table">
+<div class="bfos_opcoes_parcelamento">
+<table class="table table-condensed js_resumida">
     <tr>
         {% for i in 1..colunas %}
         <th>Parcelas</th>
@@ -6,7 +7,7 @@
         <th>Juros</th>
         {% endfor %}
     </tr>
-{% for opcao in opcoesParcelamento %}
+{% for parcela,opcao in opcoesParcelamento %}
     {% if loop.index % colunas == 1 %}
     <tr>
     {% endif %}
@@ -18,7 +19,7 @@
     </td>
     <td>
         {% if opcao.juros is defined %}
-            com juros de {{ opcao.juros }}
+            {{ opcao.juros }}
         {% else %}
             sem juros
         {% endif %}
@@ -29,3 +30,61 @@
     {% endif %}
 {% endfor %}
 </table>
+{% if mostrarLinkVerTudo == true %}
+    <table class="table table-condensed js_completa" style="display: none;">
+        <tr>
+            {% for i in 1..colunas %}
+                <th>Parcelas</th>
+                <th>Valor Parcela</th>
+                <th>Juros</th>
+            {% endfor %}
+        </tr>
+        {% for parcela,opcao in opcoesParcelamentoOriginais %}
+            {% if loop.index % colunas == 1 %}
+                <tr>
+            {% endif %}
+            <td>
+                {{ opcao.parcelas }}x iguais
+            </td>
+            <td>
+                R$ {{ opcao.valor|number_format(2,',', '.') }}
+            </td>
+            <td>
+                {% if opcao.juros is defined %}
+                    {{ opcao.juros }}
+                {% else %}
+                    sem juros
+                {% endif %}
+
+            </td>
+            {% if loop.index % colunas == 0 %}
+                </tr>
+            {% endif %}
+        {% endfor %}
+    </table>
+    <a href="#" class="js_bfos_ver_todas_opcoes_parcelamento">{{ 'Ver todas opções de parcelamento'|trans }}</a>
+    <script type="text/javascript">
+        require(['jquery'], function($){
+            $(document).ready(function($){
+
+                var $body = $('body');
+                if(!$body.data('js_bfos_ver_todas_opcoes_parcelamento_bound')){
+                    $body.delegate('.js_bfos_ver_todas_opcoes_parcelamento', 'click', function(e){
+                        e.preventDefault();
+                        var $wrapper = $(this).closest('.bfos_opcoes_parcelamento');
+                        $wrapper.find('.js_resumida').toggle();
+                        $wrapper.find('.js_completa').toggle();
+                        if($(this).text()=='Ver todas opções de parcelamento'){
+                            $(this).text('Mostrar poucas opções de parcelamento');
+                        } else {
+                            $(this).text('Ver todas opções de parcelamento');
+                        }
+                    });
+                    $body.data('js_bfos_ver_todas_opcoes_parcelamento_bound', true);
+                }
+
+            });
+        });
+    </script>
+{% endif %}
+</div>

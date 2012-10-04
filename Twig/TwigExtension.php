@@ -43,13 +43,15 @@ class TwigExtension extends \Twig_Extension
     {
         $defaults = array(
             'colunas' => 2,
-            'mostrarParcelas' => array()
+            'mostrarParcelas' => array(),
+            'mostrarLinkVerTudo' =>  false
         );
         $opcoes = array_merge($defaults, $opcoes);
         $colunas = $opcoes['colunas'];
         $quantidadePorColuna = round($configuracao->getQuantidadeMaximaParcelas()/$colunas);
 
         $opcoesParcelamento = ParcelamentoUtils::obterOpcoesDeParcelamento($configuracao, $valor);
+        $opcoesParcelamentoOriginais = $opcoesParcelamento;
         if(count($opcoes['mostrarParcelas'])){
             foreach ($opcoesParcelamento as $key=>$opcao) {
                 if(!in_array($opcao['parcelas'], $opcoes['mostrarParcelas'])){
@@ -62,7 +64,10 @@ class TwigExtension extends \Twig_Extension
         return $this->container->get('twig')->render('BFOSPagamentoBundle::opcoesParcelamento.html.twig',
             array('opcoesParcelamento'=>$opcoesParcelamento,
                 'colunas'=>$colunas,
-                'quantidadePorColuna'=>$quantidadePorColuna
+                'quantidadePorColuna'=>$quantidadePorColuna,
+                'mostrarLinkVerTudo' => count($opcoesParcelamento)<count($opcoesParcelamentoOriginais) && $opcoes['mostrarLinkVerTudo'],
+                'mostrarParcelas' => $opcoes['mostrarParcelas'],
+                'opcoesParcelamentoOriginais' => $opcoesParcelamentoOriginais
             ));
 
     }
