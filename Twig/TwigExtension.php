@@ -45,6 +45,7 @@ class TwigExtension extends \Twig_Extension
             'colunas' => 2,
             'mostrarParcelas' => array(),
             'mostrarLinkVerTudo' =>  false,
+            'mostrarJuros' =>  true,
             'view' => 'table',
             'template' => false
         );
@@ -71,6 +72,7 @@ class TwigExtension extends \Twig_Extension
                 'quantidadePorColuna'=>$quantidadePorColuna,
                 'mostrarLinkVerTudo' => count($opcoesParcelamento)<count($opcoesParcelamentoOriginais) && $opcoes['mostrarLinkVerTudo'],
                 'mostrarParcelas' => $opcoes['mostrarParcelas'],
+                'mostrarJuros' => $opcoes['mostrarJuros'],
                 'opcoesParcelamentoOriginais' => $opcoesParcelamentoOriginais
             ));
 

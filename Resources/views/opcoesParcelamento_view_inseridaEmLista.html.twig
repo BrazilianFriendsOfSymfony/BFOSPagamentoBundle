@@ -6,12 +6,13 @@
     {% endif %}
     <span class="opcap_parcelamento">
         {{ opcao.parcelas }} x iguais de R$ {{ opcao.valor|number_format(2,',', '.') }}
-        {% if opcao.juros is defined %}
-            ({{ opcao.juros }})
-        {% else %}
-            (sem juros)
+        {% if mostrarJuros == true %}
+            {% if opcao.juros is defined %}
+                ({{ opcao.juros }})
+            {% else %}
+                (sem juros)
+            {% endif %}
         {% endif %}
-
     </span>
     {% if colunas == 1 or loop.index % colunas == 0 %}
     </div>
@@ -27,10 +28,12 @@
             {% endif %}
             <span class="opcap_parcelamento">
                 {{ opcao.parcelas }} x iguais de R$ {{ opcao.valor|number_format(2,',', '.') }}
-                {% if opcao.juros is defined %}
-                    ({{ opcao.juros }})
-                {% else %}
-                    (sem juros)
+                {% if mostrarJuros == true %}
+                    {% if opcao.juros is defined %}
+                        ({{ opcao.juros }})
+                    {% else %}
+                        (sem juros)
+                    {% endif %}
                 {% endif %}
 
             </span>
