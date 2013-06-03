@@ -6,6 +6,13 @@
 
     <parameters>
         <parameter key="bfos_pagamento.twig_extension.class">BFOS\PagamentoBundle\Twig\TwigExtension</parameter>
+        <parameter key="bfos_pagamento.registro_meio_pagamento.class">BFOS\PagamentoBundle\MeioPagamento\Registro\RegistroMeioPagamento</parameter>
+        <parameter key="bfos_pagamento.registro_meio_pagamento.class">BFOS\PagamentoBundle\MeioPagamento\Registro\RegistroMeioPagamento</parameter>
+
+        <parameter key="bfos_pagamento.servico_de_criptografia.class">BFOS\PagamentoBundle\Criptografia\MCryptServicoDeCriptografia</parameter>
+        <parameter key="bfos_pagamento.servico_de_criptografia.secret" />
+        <parameter key="bfos_pagamento.servico_de_criptografia.cipher">rijndael-256</parameter>
+        <parameter key="bfos_pagamento.servico_de_criptografia.mode">ctr</parameter>
     </parameters>
 
     <services>
@@ -15,6 +22,14 @@
             <argument type="service" id="service_container" />
         </service>
 
+        <service id="bfos_pagamento.registro_meio_pagamento" class="%bfos_pagamento.registro_meio_pagamento.class%">
+        </service>
+
+        <service id="bfos_pagamento.servico_de_criptografia" class="%bfos_pagamento.servico_de_criptografia.class%">
+            <argument>%bfos_pagamento.servico_de_criptografia.secret%</argument>
+            <argument>%bfos_pagamento.servico_de_criptografia.cipher%</argument>
+            <argument>%bfos_pagamento.servico_de_criptografia.mode%</argument>
+        </service>
     </services>
 
 </container>

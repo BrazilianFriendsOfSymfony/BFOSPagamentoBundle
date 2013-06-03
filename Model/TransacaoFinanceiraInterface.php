@@ -14,5 +14,18 @@ namespace BFOS\PagamentoBundle\Model;
 
 interface TransacaoFinanceiraInterface
 {
+    const SITUACAO_CANCELADA = 1;
+    const SITUACAO_FALHADA = 2;
+    const SITUACAO_NOVA = 3;
+    const SITUACAO_PENDENTE = 4;
+    const SITUACAO_CONCLUIDA_COM_SUCCESSO = 5;
+
+    const TIPO_TRANSACAO_APROVACAO = 1;
+    const TIPO_TRANSACAO_APROVACAO_E_DEPOSITO = 2;
+    const TIPO_TRANSACAO_CREDITO = 3;
+    const TIPO_TRANSACAO_DEPOSITO = 4;
+    const TIPO_TRANSACAO_ESTORNO_APROVACAO = 5;
+    const TIPO_TRANSACAO_ESTORNO_CREDITO = 6;
+    const TIPO_TRANSACAO_ESTORNO_DEPOSITO = 7;
 
 }

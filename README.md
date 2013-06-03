@@ -3,6 +3,11 @@ BFOSPagamentoBundle
 
 Este bundle tem por objetivo agregar funcionalidades comuns a vários métodos de pagamento.
 
+Observacao
+----------
+A parte de Meios de Pagamentos teve seu conceito traduzido para a realidade brasileira do
+http://jmsyst.com/bundles/JMSPaymentCoreBundle
+
 Requisitos
 ----------
 
