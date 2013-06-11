@@ -9,17 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace BFOS\PagamentoBundle\MeioPagamento;
+namespace BFOS\PagamentoBundle\GatewayPagamento;
 
 
-class GerenteMeioPagamento implements GerenteMeioPagamentoInterface
+class Resultado
 {
-    /**
-     * @inheritdoc
-     */
-    function aprovaEDeposita($pagamentoId, $quantia)
-    {
-        // TODO: Implement aprovaEDeposita() method.
-    }
 
 }

@@ -14,6 +14,7 @@ namespace BFOS\PagamentoBundle\Model;
 
 class Pagamento implements PagamentoInterface
 {
+    protected $id;
     protected $valorAprovado;
     protected $valorAprovando;
     protected $valorDepositando;
@@ -24,6 +25,25 @@ class Pagamento implements PagamentoInterface
     protected $valorEsperado;
     protected $precisaDeAtencao;
     protected $vencido;
+    protected $transacoes;
+
+    /**
+     * @inheritdoc
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
+
 
     public function getValorAprovado()
     {
@@ -80,14 +100,34 @@ class Pagamento implements PagamentoInterface
         // TODO: Implement getDataVencimento() method.
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getInstrucaoPagamento()
     {
-        // TODO: Implement getInstrucaoPagamento() method.
+        return $this->instrucaoPagamento;
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function setInstrucaoPagamento(InstrucaoPagamentoInterface $instrucaoPagamento)
+    {
+        $this->instrucaoPagamento = $instrucaoPagamento;
+        return $this;
+    }
+
 
     public function getTransacaoPendente()
     {
-        // TODO: Implement getTransacaoPendente() method.
+        /** @var TransacaoFinanceiraInterface $transacao */
+        foreach ($this->transacoes as $transacao) {
+            if (TransacaoFinanceiraInterface::SITUACAO_PENDENTE === $transacao->getSituacao()) {
+                return $transacao;
+            }
+        }
+
+        return null;
     }
 
     public function getSituacao()
@@ -95,10 +135,23 @@ class Pagamento implements PagamentoInterface
         // TODO: Implement getSituacao() method.
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getValorEsperado()
     {
-        // TODO: Implement getValorEsperado() method.
+        return $this->valorEsperado;
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function setValorEsperado($valor)
+    {
+        $this->valorEsperado = $valor;
+        return $this;
+    }
+
 
     public function temTransacaoPendente()
     {

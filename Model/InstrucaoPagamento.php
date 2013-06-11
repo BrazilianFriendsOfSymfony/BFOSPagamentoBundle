@@ -17,10 +17,14 @@ use Doctrine\Common\Collections\Collection;
 
 class InstrucaoPagamento implements InstrucaoPagamentoInterface
 {
+    protected $id;
     protected $referencia;
-    protected $meioPagamento;
+    protected $gatewayPagamento;
     protected $situacao;
     protected $valorTotal;
+    protected $valorAprovando;
+    protected $valorAprovado;
+    protected $valorDepositado;
     protected $pagamentos;
 
     public function __construct()
@@ -31,21 +35,39 @@ class InstrucaoPagamento implements InstrucaoPagamentoInterface
     }
 
     /**
-     * @param string $meioPagamento
-     * @return InstrucaoPagamentoInterface
+     * @inheritdoc
      */
-    public function setMeioPagamento($meioPagamento)
+    public function setId($id)
     {
-        $this->meioPagamento = $meioPagamento;
+        $this->id = $id;
         return $this;
     }
 
     /**
      * @inheritdoc
      */
-    public function getMeioPagamento()
+    public function getId()
     {
-        return $this->meioPagamento;
+        return $this->id;
+    }
+
+
+    /**
+     * @param string $gatewayPagamento
+     * @return InstrucaoPagamentoInterface
+     */
+    public function setGatewayPagamento($gatewayPagamento)
+    {
+        $this->gatewayPagamento = $gatewayPagamento;
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getGatewayPagamento()
+    {
+        return $this->gatewayPagamento;
     }
 
     /**
@@ -85,6 +107,28 @@ class InstrucaoPagamento implements InstrucaoPagamentoInterface
     }
 
     /**
+     * @inheritdoc
+     */
+    public function getTransacaoPendente()
+    {
+        /** @var PagamentoInterface $pagamento */
+        foreach ($this->pagamentos as $pagamento) {
+            if (null !== $transaction = $pagamento->getTransacaoPendente()) {
+                return $transaction;
+            }
+        }
+
+        /*foreach ($this->credits as $credit) {
+            if (null !== $transaction = $credit->getPendingTransaction()) {
+                return $transaction;
+            }
+        }*/
+
+        return null;
+    }
+
+
+    /**
      * @param int $situacao
      * @return InstrucaoPagamentoInterface
      */
@@ -119,4 +163,57 @@ class InstrucaoPagamento implements InstrucaoPagamentoInterface
     {
         return $this->valorTotal;
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function setValorAprovado($valorAprovado)
+    {
+        $this->valorAprovado = $valorAprovado;
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getValorAprovado()
+    {
+        return $this->valorAprovado;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setValorAprovando($valorAprovando)
+    {
+        $this->valorAprovando = $valorAprovando;
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getValorAprovando()
+    {
+        return $this->valorAprovando;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setValorDepositado($valorDepositado)
+    {
+        $this->valorDepositado = $valorDepositado;
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getValorDepositado()
+    {
+        return $this->valorDepositado;
+    }
+
+
 }

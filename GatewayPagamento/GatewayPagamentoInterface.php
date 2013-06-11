@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace BFOS\PagamentoBundle\MeioPagamento;
+namespace BFOS\PagamentoBundle\GatewayPagamento;
 
-use BFOS\PagamentoBundle\MeioPagamento\Exception\InstrucaoPagamentoInvalidaException;
+use BFOS\PagamentoBundle\GatewayPagamento\Exception\InstrucaoPagamentoInvalidaException;
 use BFOS\PagamentoBundle\Model\InstrucaoPagamentoInterface;
 use BFOS\PagamentoBundle\Model\TransacaoFinanceiraInterface;
 
@@ -24,7 +24,7 @@ use BFOS\PagamentoBundle\Model\TransacaoFinanceiraInterface;
  *
  * @author Paulo Ribeiro <paulo@duocriativa.com.br>
  */
-interface MeioPagamentoInterface
+interface GatewayPagamentoInterface
 {
     /**
      * Executa uma transação de aprovação.

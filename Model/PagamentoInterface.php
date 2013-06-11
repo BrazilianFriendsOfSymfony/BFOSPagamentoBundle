@@ -23,6 +23,22 @@ interface PagamentoInterface
     const SITUACAO_DEPOSITANDO = 7;
     const SITUACAO_DEPOSITADO = 8;
 
+    /**
+     * Id.
+     *
+     * @return int
+     */
+    public function getId();
+
+    /**
+     * Define o id.
+     *
+     * @param int $id
+     *
+     * @return PagamentoInterface
+     */
+    public function setId($id);
+
     public function getValorAprovado();
 
     public function getTransacaoDeAprovacao();
@@ -45,13 +61,41 @@ interface PagamentoInterface
 
     public function getDataVencimento();
 
+    /**
+     * Retorna a InstrucaoPagamento a qual o pagamento pertence.
+     *
+     * @return InstrucaoPagamentoInterface
+     */
     public function getInstrucaoPagamento();
+
+    /**
+     * Define a InstrucaoPagamento a qual o pagamento pertence.
+     *
+     * @param InstrucaoPagamentoInterface $instrucaoPagamento
+     *
+     * @return PagamentoInterface
+     */
+    public function setInstrucaoPagamento(InstrucaoPagamentoInterface $instrucaoPagamento);
 
     public function getTransacaoPendente();
 
     public function getSituacao();
 
+    /**
+     * Retorna o valor esperado por esse pagamento.
+     *
+     * @return float
+     */
     public function getValorEsperado();
+
+    /**
+     * Define o valor esperado por esse pagamento.
+     *
+     * @param float $valor
+     *
+     * @return PagamentoInterface
+     */
+    public function setValorEsperado($valor);
 
     public function temTransacaoPendente();
 

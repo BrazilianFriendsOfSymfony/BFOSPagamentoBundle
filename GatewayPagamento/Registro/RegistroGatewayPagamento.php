@@ -9,24 +9,24 @@
  * file that was distributed with this source code.
  */
 
-namespace BFOS\PagamentoBundle\MeioPagamento\Registro;
+namespace BFOS\PagamentoBundle\GatewayPagamento\Registro;
 
 
-use BFOS\PagamentoBundle\MeioPagamento\MeioPagamentoInterface;
+use BFOS\PagamentoBundle\GatewayPagamento\GatewayPagamentoInterface;
 
-class RegistroMeioPagamento implements RegistroMeioPagamentoInterface
+class RegistroGatewayPagamento implements RegistroGatewayPagamentoInterface
 {
-    protected $meios;
+    protected $gateways = array();
 
     /**
      * @inheritdoc
      */
-    public function registrar($identificador, MeioPagamentoInterface $meioPagamento, $etiqueta = '')
+    public function registrar($identificador, GatewayPagamentoInterface $gatewayPagamento, $etiqueta = '')
     {
         if(!$this->jahRegistrado($identificador)){
-            $this->meios[$identificador] = array(
+            $this->gateways[$identificador] = array(
                 'etiqueta' => $etiqueta,
-                'meioPagamento' => $meioPagamento
+                'gateway' => $gatewayPagamento
             );
         }
     }
@@ -37,7 +37,7 @@ class RegistroMeioPagamento implements RegistroMeioPagamentoInterface
     public function desregistrar($identificador)
     {
         if($this->jahRegistrado($identificador)){
-            unset($this->meios[$identificador]);
+            unset($this->gateways[$identificador]);
         }
     }
 
@@ -46,7 +46,7 @@ class RegistroMeioPagamento implements RegistroMeioPagamentoInterface
      */
     public function jahRegistrado($identificador)
     {
-        return isset($this->meios[$identificador]);
+        return isset($this->gateways[$identificador]);
     }
 
     /**
@@ -55,7 +55,7 @@ class RegistroMeioPagamento implements RegistroMeioPagamentoInterface
     public function get($identificador)
     {
         if(!$this->jahRegistrado($identificador)){
-            return $this->meios[$identificador]['meioPagamento'];
+            return $this->gateways[$identificador]['gateway'];
         }
         return null;
     }
@@ -65,10 +65,22 @@ class RegistroMeioPagamento implements RegistroMeioPagamentoInterface
      */
     public function getEtiqueta($identificador)
     {
-        if(!$this->jahRegistrado($identificador)){
-            return $this->meios[$identificador]['etiqueta'];
+        if($this->jahRegistrado($identificador)){
+            return $this->gateways[$identificador]['etiqueta'];
         }
         return null;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getTodos()
+    {
+        $lista = array();
+        foreach ($this->gateways as $identificador => $gateway) {
+            $lista[$identificador] = $gateway['gateway'];
+        }
+        return $lista;
     }
 
 

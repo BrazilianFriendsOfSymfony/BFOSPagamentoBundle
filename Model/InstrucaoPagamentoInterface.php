@@ -30,6 +30,20 @@ interface InstrucaoPagamentoInterface
     const SITUACAO_INVALIDA = 4;
 
     /**
+     * Id
+     *
+     * @return int
+     */
+    public function getId();
+
+    /**
+     * @param int $id
+     *
+     * @return InstrucaoPagamentoInterface
+     */
+    public function setId($id);
+
+    /**
      * Retorna o identificador do que se refere a instrução de pagamento.
      * Geralmente é número do pedido ou ordem de serviço.
      *
@@ -42,7 +56,7 @@ interface InstrucaoPagamentoInterface
      *
      * @return string
      */
-    public function getMeioPagamento();
+    public function getGatewayPagamento();
 
     /**
      * Retorna a situação atual da instrução de pagamento.
@@ -64,4 +78,59 @@ interface InstrucaoPagamentoInterface
      * @return Collection
      */
     public function getPagamentos();
+
+    /**
+     * Retorna a transação pendente.
+     *
+     * @return TransacaoFinanceiraInterface
+     */
+    public function getTransacaoPendente();
+
+    /**
+     * Valor que em aprovação. Utilizado durante o processo de aprovação.
+     *
+     * @return float
+     */
+    public function getValorAprovando();
+
+    /**
+     * Define o valor em aprovação.
+     *
+     * @param float $valor
+     *
+     * @return InstrucaoPagamentoInterface
+     */
+    public function setValorAprovando($valor);
+
+    /**
+     * Valor que foi aprovado até agora. Soma parcial é permitida.
+     *
+     * @return float
+     */
+    public function getValorAprovado();
+
+    /**
+     * Define o valor já aprovado.
+     *
+     * @param float $valor
+     *
+     * @return InstrucaoPagamentoInterface
+     */
+    public function setValorAprovado($valor);
+
+    /**
+     * Valor que já foi depositado (autorizado e transferido, com recebimento garantido).
+     *
+     * @return float
+     */
+    public function getValorDepositado();
+
+    /**
+     * Define o valor que já foi depositado.
+     *
+     * @param float $valor
+     *
+     * @return InstrucaoPagamentoInterface
+     */
+    public function setValorDepositado($valor);
 }

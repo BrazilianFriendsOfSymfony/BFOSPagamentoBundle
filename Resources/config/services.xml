@@ -6,8 +6,8 @@
 
     <parameters>
         <parameter key="bfos_pagamento.twig_extension.class">BFOS\PagamentoBundle\Twig\TwigExtension</parameter>
-        <parameter key="bfos_pagamento.registro_meio_pagamento.class">BFOS\PagamentoBundle\MeioPagamento\Registro\RegistroMeioPagamento</parameter>
-        <parameter key="bfos_pagamento.registro_meio_pagamento.class">BFOS\PagamentoBundle\MeioPagamento\Registro\RegistroMeioPagamento</parameter>
+        <parameter key="bfos_pagamento.registro_gateway_pagamento.class">BFOS\PagamentoBundle\GatewayPagamento\Registro\RegistroGatewayPagamento</parameter>
+        <parameter key="bfos_pagamento.gerente_gateway_pagamento.class">BFOS\PagamentoBundle\GatewayPagamento\GerenteGatewayPagamento</parameter>
 
         <parameter key="bfos_pagamento.servico_de_criptografia.class">BFOS\PagamentoBundle\Criptografia\MCryptServicoDeCriptografia</parameter>
         <parameter key="bfos_pagamento.servico_de_criptografia.secret" />
@@ -22,7 +22,12 @@
             <argument type="service" id="service_container" />
         </service>
 
-        <service id="bfos_pagamento.registro_meio_pagamento" class="%bfos_pagamento.registro_meio_pagamento.class%">
+        <service id="bfos_pagamento.registro_gateway_pagamento" class="%bfos_pagamento.registro_gateway_pagamento.class%">
+        </service>
+
+        <!--Gerente Gateways-->
+        <service id="bfos_pagamento.gerente_gateway_pagamento" class="%bfos_pagamento.gerente_gateway_pagamento.class%">
+            <argument id="doctrine.orm.default_entity_manager" type="service" />
         </service>
 
         <service id="bfos_pagamento.servico_de_criptografia" class="%bfos_pagamento.servico_de_criptografia.class%">

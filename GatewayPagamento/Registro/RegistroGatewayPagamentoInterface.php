@@ -9,23 +9,23 @@
 * file that was distributed with this source code.
 */
 
-namespace BFOS\PagamentoBundle\MeioPagamento\Registro;
+namespace BFOS\PagamentoBundle\GatewayPagamento\Registro;
 
 
-use BFOS\PagamentoBundle\MeioPagamento\MeioPagamentoInterface;
+use BFOS\PagamentoBundle\GatewayPagamento\GatewayPagamentoInterface;
 
-interface RegistroMeioPagamentoInterface
+interface RegistroGatewayPagamentoInterface
 {
     /**
      * Registra um meio de pagamento.
      *
      * @param string                 $identificador Identificador interno do meio de pagamento.
-     * @param MeioPagamentoInterface $meioPagamento
+     * @param GatewayPagamentoInterface $gatewayPagamento
      * @param string                 $etiqueta Texto que geralmente aparece aos usuários.
      *
      * @return void
      */
-    public function registrar($identificador, MeioPagamentoInterface $meioPagamento, $etiqueta = '');
+    public function registrar($identificador, GatewayPagamentoInterface $gatewayPagamento, $etiqueta = '');
 
     /**
      * Remove um meio de pagamento a partir de seu identificador.
@@ -50,7 +50,7 @@ interface RegistroMeioPagamentoInterface
      *
      * @param string $identificador
      *
-     * @return MeioPagamentoInterface
+     * @return GatewayPagamentoInterface
      */
     public function get($identificador);
 
@@ -59,7 +59,14 @@ interface RegistroMeioPagamentoInterface
      *
      * @param string $identificador
      *
-     * @return MeioPagamentoInterface
+     * @return GatewayPagamentoInterface
      */
     public function getEtiqueta($identificador);
+
+    /**
+     * Retorna a lista de todos os gateways de pagamento disponíveis.
+     *
+     * @return array
+     */
+    public function getTodos();
 }

@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace BFOS\PagamentoBundle\MeioPagamento;
+namespace BFOS\PagamentoBundle\GatewayPagamento;
 
 
-use BFOS\PagamentoBundle\MeioPagamento\Exception\FuncaoNaoSuportadaException;
+use BFOS\PagamentoBundle\GatewayPagamento\Exception\FuncaoNaoSuportadaException;
 use BFOS\PagamentoBundle\Model\InstrucaoPagamentoInterface;
 use BFOS\PagamentoBundle\Model\TransacaoFinanceiraInterface;
 
-abstract class AbstractMeioPagamento implements MeioPagamentoInterface
+abstract class AbstractGatewayPagamento implements GatewayPagamentoInterface
 {
     /**
      * @inheritdoc

@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace BFOS\PagamentoBundle\MeioPagamento;
+namespace BFOS\PagamentoBundle\GatewayPagamento\Exception;
 
 
-class Resultado
+class FuncaoNaoSuportadaException extends \Exception
 {
 
 }

@@ -28,4 +28,35 @@ interface TransacaoFinanceiraInterface
     const TIPO_TRANSACAO_ESTORNO_CREDITO = 6;
     const TIPO_TRANSACAO_ESTORNO_DEPOSITO = 7;
 
+    /**
+     * Retorna a situação atual da transação.
+     *
+     * @return int
+     */
+    public function getSituacao();
+
+    /**
+     * Define a situação atual da transação.
+     *
+     * @param int $situacao
+     *
+     * @return TransacaoFinanceiraInterface
+     */
+    public function setSituacao($situacao);
+
+    /**
+     * Retorna o pagamento a qual a transação pertence.
+     *
+     * @return PagamentoInterface
+     */
+    public function getPagamento();
+
+    /**
+     * Define o pagamento a qual a transação pertence.
+     *
+     * @param PagamentoInterface $pagamento
+     *
+     * @return TransacaoFinanceiraInterface
+     */
+    public function setPagamento(PagamentoInterface $pagamento);
 }

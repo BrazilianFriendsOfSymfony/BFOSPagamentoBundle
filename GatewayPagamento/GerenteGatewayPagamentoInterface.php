@@ -9,11 +9,27 @@
  * file that was distributed with this source code.
  */
 
-namespace BFOS\PagamentoBundle\MeioPagamento;
+namespace BFOS\PagamentoBundle\GatewayPagamento;
 
 
-interface GerenteMeioPagamentoInterface
+use BFOS\PagamentoBundle\Model\InstrucaoPagamentoInterface;
+use BFOS\PagamentoBundle\Model\PagamentoInterface;
+
+interface GerenteGatewayPagamentoInterface
 {
+    /**
+     * Este método criará um objeto Pagamento para a InstrucaoPagamento
+     * que poderá ser utilizado para realizar transações (aprovar e depositar)
+     *
+     * @param integer                 $instrucaoPagamentoId
+     * @param float                   $valor
+     * @param PagamentoInterface|null $pagamento O objeto base utilizado para criar o pagamento.
+     *                                           Útil quando a implementação difere do oferecido pelo bundle.
+     *
+     * @return PagamentoInterface
+     */
+    public function criarPagamento($instrucaoPagamentoId, $valor, $pagamento = null);
+
     /**
      * Este método executa uma transação aprovaEDeposita contra um pagamento.
      * (transação de "venda" ou "autorização com captura")
@@ -70,5 +86,16 @@ interface GerenteMeioPagamentoInterface
      * @param float $quantia
      * @return Resultado
      */
-    function aprovaEDeposita($pagamentoId, $quantia);
+    public function aprovaEDeposita($pagamentoId, $quantia);
+
+    /**
+     * Retorna a InstrucaoPagamento pelo id.
+     *
+     * @param int  $id
+     * @param bool $mascararDadosSensiveis
+     *
+     * @throws Exception\InstrucaoPagamentoNaoEncontradaException
+     * @return InstrucaoPagamentoInterface
+     */
+    public function getInstrucaoPagamento($id, $mascararDadosSensiveis = true);
 }
