@@ -13,6 +13,15 @@
         <parameter key="bfos_pagamento.servico_de_criptografia.secret" />
         <parameter key="bfos_pagamento.servico_de_criptografia.cipher">rijndael-256</parameter>
         <parameter key="bfos_pagamento.servico_de_criptografia.mode">ctr</parameter>
+
+        <parameter key="bfos_pagamento.gateway_pagamento_choice_type.class">BFOS\PagamentoBundle\GatewayPagamento\Form\GatewayPagamentoChoiceType</parameter>
+        <parameter key="bfos_pagamento.forma_pagamento_type.class">BFOS\PagamentoBundle\Form\Type\FormaPagamentoType</parameter>
+        <parameter key="bfos_pagamento.forma_pagamento.class">BFOS\PagamentoBundle\Entity\FormaPagamento</parameter>
+
+        <parameter key="bfos_pagamento.resultado.class">BFOS\PagamentoBundle\GatewayPagamento\Resultado</parameter>
+        <parameter key="bfos_pagamento.instrucao_pagamento.class">BFOS\PagamentoBundle\Entity\InstrucaoPagamento</parameter>
+        <parameter key="bfos_pagamento.pagamento.class">BFOS\PagamentoBundle\Entity\Pagamento</parameter>
+        <parameter key="bfos_pagamento.transacao_financeira.class">BFOS\PagamentoBundle\Entity\TransacaoFinanceira</parameter>
     </parameters>
 
     <services>
@@ -22,19 +31,43 @@
             <argument type="service" id="service_container" />
         </service>
 
+        <!--Registro Gateway Pagamento-->
         <service id="bfos_pagamento.registro_gateway_pagamento" class="%bfos_pagamento.registro_gateway_pagamento.class%">
         </service>
 
         <!--Gerente Gateways-->
         <service id="bfos_pagamento.gerente_gateway_pagamento" class="%bfos_pagamento.gerente_gateway_pagamento.class%">
             <argument id="doctrine.orm.default_entity_manager" type="service" />
+            <argument type="collection">
+                <argument key="resultado_class">%bfos_pagamento.resultado.class%</argument>
+                <argument key="instrucao_pagamento_class">%bfos_pagamento.instrucao_pagamento.class%</argument>
+                <argument key="pagamento_class">%bfos_pagamento.pagamento.class%</argument>
+                <argument key="transacao_financeira_class">%bfos_pagamento.transacao_financeira.class%</argument>
+            </argument>
+            <argument type="service" id="bfos_pagamento.registro_gateway_pagamento" />
+            <argument type="service" id="event_dispatcher" />
         </service>
 
+        <!--Serviço de Criptografia-->
         <service id="bfos_pagamento.servico_de_criptografia" class="%bfos_pagamento.servico_de_criptografia.class%">
             <argument>%bfos_pagamento.servico_de_criptografia.secret%</argument>
             <argument>%bfos_pagamento.servico_de_criptografia.cipher%</argument>
             <argument>%bfos_pagamento.servico_de_criptografia.mode%</argument>
         </service>
+
+        <!--Gateway Pagamento Choice Type-->
+        <service id="bfos_pagamento.gateway_pagamento_choice_type" class="%bfos_pagamento.gateway_pagamento_choice_type.class%">
+            <argument>%bfos_pagamento.gateways%</argument>
+            <tag name="form.type" alias="bfos_pagamento_gateway_pagamento_choice" />
+        </service>
+
+        <!--Forma Pagamento Type-->
+        <service id="bfos_pagamento.forma_pagamento_type" class="%bfos_pagamento.forma_pagamento_type.class%">
+            <argument>%bfos_pagamento.forma_pagamento.class%</argument>
+            <argument type="service" id="bfos_pagamento.registro_gateway_pagamento" />
+            <tag name="form.type" alias="bfos_pagamento_forma_pagamento_type" />
+        </service>
+
     </services>
 
 </container>

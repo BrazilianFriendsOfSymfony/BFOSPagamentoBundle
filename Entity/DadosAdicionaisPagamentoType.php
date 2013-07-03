@@ -11,36 +11,37 @@
 
 namespace BFOS\PagamentoBundle\Entity;
 
-use JMS\Payment\CoreBundle\Cryptography\EncryptionServiceInterface;
+use BFOS\PagamentoBundle\Criptografia\ServicoDeCriptografiaInterface;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\ObjectType;
 
-class DadosAdicionaisDataType extends ObjectType
+class DadosAdicionaisPagamentoType extends ObjectType
 {
-    const NAME = 'extended_payment_data';
+    const NAME = 'dados_adicionais_pagamento_type';
 
-    private static $encryptionService;
+    /** @var ServicoDeCriptografiaInterface $servicoDeCriptografia */
+    private static $servicoDeCriptografia;
 
-    public static function setEncryptionService(EncryptionServiceInterface $service)
+    public static function setServicoDeCriptografia(ServicoDeCriptografiaInterface $service)
     {
-        self::$encryptionService = $service;
+        self::$servicoDeCriptografia = $service;
     }
 
-    public static function getEncryptionService()
+    public static function getServicoDeCriptografia()
     {
-        return self::$encryptionService;
+        return self::$servicoDeCriptografia;
     }
 
-    public function convertToDatabaseValue($extendedData, AbstractPlatform $platform)
+    public function convertToDatabaseValue($dadosAdicionais, AbstractPlatform $platform)
     {
-        if (null === $extendedData) {
+        if (null === $dadosAdicionais) {
             return null;
         }
 
-        $reflection = new \ReflectionProperty($extendedData, 'data');
+        $reflection = new \ReflectionProperty($dadosAdicionais, 'data');
         $reflection->setAccessible(true);
-        $data = $reflection->getValue($extendedData);
+        $data = $reflection->getValue($dadosAdicionais);
         $reflection->setAccessible(false);
 
         foreach ($data as $name => $value) {
@@ -49,7 +50,7 @@ class DadosAdicionaisDataType extends ObjectType
                 continue;
             }
             if (true === $value[1]) {
-                $data[$name][0] = self::$encryptionService->encrypt(serialize($value[0]));
+                $data[$name][0] = self::$servicoDeCriptografia->criptografar(serialize($value[0]));
             }
         }
 
@@ -65,17 +66,17 @@ class DadosAdicionaisDataType extends ObjectType
         } else if (is_array($data)) {
             foreach ($data as $name => $value) {
                 if (true === $value[1]) {
-                    $data[$name][0] = unserialize(self::$encryptionService->decrypt($value[0]));
+                    $data[$name][0] = unserialize(self::$servicoDeCriptografia->descriptografar($value[0]));
                 }
             }
 
-            $extendedData = new ExtendedData;
-            $reflection = new \ReflectionProperty($extendedData, 'data');
+            $dadosAdicionais = new DadosAdicionais();
+            $reflection = new \ReflectionProperty($dadosAdicionais, 'data');
             $reflection->setAccessible(true);
-            $reflection->setValue($extendedData, $data);
+            $reflection->setValue($dadosAdicionais, $data);
             $reflection->setAccessible(false);
 
-            return $extendedData;
+            return $dadosAdicionais;
         } else {
             throw ConversionException::conversionFailed($value, $this->getName());
         }

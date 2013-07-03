@@ -26,6 +26,15 @@ use BFOS\PagamentoBundle\Model\TransacaoFinanceiraInterface;
  */
 interface GatewayPagamentoInterface
 {
+    const RESPOSTA_CODIGO_PENDENTE = 'pendente';
+    const RESPOSTA_CODIGO_SUCESSO = 'successo';
+
+    const JUSTIFICATIVA_ACAO_REQUERIDA = 'acao_requerida';
+    const JUSTIFICATIVA_BLOQUEADO = 'bloqueado';
+    const JUSTIFICATIVA_INVALIDO = 'invalido';
+    const JUSTIFICATIVA_SUCESSO = 'none';
+    const JUSTIFICATIVA_TIMEOUT = 'timeout';
+
     /**
      * Executa uma transação de aprovação.
      *
@@ -62,7 +71,7 @@ interface GatewayPagamentoInterface
      * PaymentInstruction, and whether they are syntactically correct.
      *
      * This method is meant to perform a fast parameter validation; no connection
-     * to any payment back-end system should be made at this stage.
+     * to any pagamento back-end system should be made at this stage.
      *
      * In case, this method is not implemented. The PaymentInstruction will
      * be considered to be valid.
@@ -72,4 +81,21 @@ interface GatewayPagamentoInterface
      * @return void
      */
     public function validarInstrucaoPagamento(InstrucaoPagamentoInterface $instrucaoPagamento);
+
+    /**
+     * Retorna o nome do FormType para configuração do gateway.
+     * Ao habilitar o gateway, o usuário poderá configurar com as informações
+     * de seu contrato com o gateway de pagamento.
+     *
+     * @return string
+     */
+    public function getConfiguracaoFormType();
+
+    /**
+     * Indica se o gateway de pagamento tem configurações a serem
+     * feitas por quem está habilitando o meio.
+     *
+     * @return boolean
+     */
+    public function ehConfiguravel();
 }

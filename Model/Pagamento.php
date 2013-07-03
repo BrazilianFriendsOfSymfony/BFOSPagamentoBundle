@@ -12,6 +12,8 @@
 namespace BFOS\PagamentoBundle\Model;
 
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 class Pagamento implements PagamentoInterface
 {
     protected $id;
@@ -26,6 +28,23 @@ class Pagamento implements PagamentoInterface
     protected $precisaDeAtencao;
     protected $vencido;
     protected $transacoes;
+    protected $criadoEm;
+    protected $atualizadoEm;
+
+    public function __construct()
+    {
+        $this->situacao = self::SITUACAO_NOVO;
+        $this->valorAprovado = 0.0;
+        $this->valorAprovando = 0.0;
+        $this->valorDepositado = 0.0;
+        $this->valorDepositando = 0.0;
+        $this->valorEsperado = 0.0;
+        $this->transacoes = new ArrayCollection();
+        $this->precisaDeAtencao = false;
+        $this->vencido = false;
+        $this->criadoEm = new \DateTime;
+    }
+
 
     /**
      * @inheritdoc
@@ -44,60 +63,109 @@ class Pagamento implements PagamentoInterface
         return $this;
     }
 
-
+    /**
+     * @inheritdoc
+     */
     public function getValorAprovado()
     {
         return $this->valorAprovado;
     }
 
-    public function getTransacaoDeAprovacao()
-    {
-        // TODO: Implement getTransacaoDeAprovacao() method.
-    }
-
-    public function getValorAprovando()
-    {
-        // TODO: Implement getValorAprovando() method.
-    }
-
-    public function getValorDepositado()
-    {
-        // TODO: Implement getValorDepositado() method.
-    }
-
-    public function getValorDepositando()
-    {
-        // TODO: Implement getValorDepositando() method.
-    }
-
-    public function getTransacoesDeDeposito()
-    {
-        // TODO: Implement getTransacoesDeDeposito() method.
-    }
-
+    /**
+     * @inheritdoc
+     */
     public function setValorAprovado($valor)
     {
-        // TODO: Implement setValorAprovado() method.
+        $this->valorAprovado = $valor;
+        return $this;
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function getTransacaoDeAprovacao()
+    {
+        /** @var TransacaoFinanceiraInterface $transacao */
+        foreach ($this->transacoes as $transacao) {
+            $type = $transacao->getTipoTransacao();
+
+            if (TransacaoFinanceiraInterface::TIPO_TRANSACAO_APROVACAO === $type
+                || TransacaoFinanceiraInterface::TIPO_TRANSACAO_APROVACAO_E_DEPOSITO === $type) {
+
+                return $transacao;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getValorAprovando()
+    {
+        return $this->valorAprovando;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function setValorAprovando($valor)
     {
-        // TODO: Implement setValorAprovando() method.
+        $this->valorAprovando = $valor;
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function getValorDepositado()
+    {
+        return $this->valorDepositado;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function setValorDepositado($valor)
     {
-        // TODO: Implement setValorDepositado() method.
+        $this->valorDepositado = $valor;
+        return $this;
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function getValorDepositando()
+    {
+        return $this->valorDepositando;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function setValorDepositando($valor)
     {
-        // TODO: Implement setValorDepositando() method.
+        $this->valorDepositando = $valor;
+        return $this;
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function getTransacoesDeDeposito()
+    {
+        /** @var TransacaoFinanceiraInterface $transacao */
+        return $this->transacoes->filter(function($transacao) {
+                return TransacaoFinanceiraInterface::TIPO_TRANSACAO_DEPOSITO === $transacao->getTipoTransacao();
+            });
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getDataVencimento()
     {
-        // TODO: Implement getDataVencimento() method.
+        return $this->dataVencimento;
     }
 
     /**
@@ -130,9 +198,12 @@ class Pagamento implements PagamentoInterface
         return null;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getSituacao()
     {
-        // TODO: Implement getSituacao() method.
+        return $this->situacao;
     }
 
     /**
@@ -152,41 +223,128 @@ class Pagamento implements PagamentoInterface
         return $this;
     }
 
-
+    /**
+     * @inheritdoc
+     */
     public function temTransacaoPendente()
     {
-        // TODO: Implement temTransacaoPendente() method.
+        return null == $this->getTransacaoPendente();
     }
 
+    /**
+     * @inheritdoc
+     */
     public function precisaDeAtencao()
     {
-        // TODO: Implement precisaDeAtencao() method.
-    }
-
-    public function estahVencido()
-    {
-        // TODO: Implement estahVencido() method.
+        return $this->precisaDeAtencao;
     }
 
     public function setPrecisaDeAtencao($boolean)
     {
-        // TODO: Implement setPrecisaDeAtencao() method.
+        $this->precisaDeAtencao = $boolean;
+        return $this;
     }
 
-    public function setDataVencimento(\DateTime $date)
+    /**
+     * @inheritdoc
+     */
+    public function setDataVencimento(\DateTime $data)
     {
-        // TODO: Implement setDataVencimento() method.
+        $this->dataVencimento = $data;
+        return $this;
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function getVencido()
+    {
+        return $this->vencido;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function setVencido($boolean)
     {
-        // TODO: Implement setVencido() method.
+        $this->vencido = $boolean;
+        return $this;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function setSituacao($situacao)
     {
-        // TODO: Implement setSituacao() method.
+        $this->situacao = $situacao;
+        return $this;
     }
 
+    /**
+     * Adiciona uma transação ao pagamento.
+     *
+     * @param TransacaoFinanceiraInterface $transacao
+     *
+     * @return PagamentoInterface
+     */
+    public function adicionarTransacao(TransacaoFinanceiraInterface $transacao)
+    {
+        if($this->jahAdicionouTransacao($transacao)){
+            return;
+        }
+        $this->transacoes[] = $transacao;
+        $transacao->setPagamento($this);
+    }
 
+    /**
+     * Indica se a transação já foi adicionada ao pagamento.
+     *
+     * @param TransacaoFinanceiraInterface $transacao
+     *
+     * @return PagamentoInterface
+     */
+    public function jahAdicionouTransacao(TransacaoFinanceiraInterface $transacao)
+    {
+        /** @var TransacaoFinanceiraInterface $trans */
+        foreach ($this->transacoes as $trans) {
+            if($trans->getId() == $transacao->getId()){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setAtualizadoEm($atualizadoEm)
+    {
+        $this->atualizadoEm = $atualizadoEm;
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getAtualizadoEm()
+    {
+        return $this->atualizadoEm;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setCriadoEm($criadoEm)
+    {
+        $this->criadoEm = $criadoEm;
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getCriadoEm()
+    {
+        return $this->criadoEm;
+    }
 }

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                    https://github.com/doctrine/doctrine2/raw/master/doctrine-mapping.xsd">
+
+    <entity name="BFOS\PagamentoBundle\Entity\InstrucaoPagamento" table="bfos_instrucao_pagamento" change-tracking-policy="DEFERRED_EXPLICIT">
+        <id name="id" type="integer"><generator strategy="AUTO"/></id>
+
+        <field name="situacao" type="smallint" nullable="false" />
+        <field name="gatewayPagamento" type="string" length="255" nullable="false" />
+        <field name="referencia" type="string" length="255" nullable="true" />
+        <field name="valorTotal" type="decimal" scale="5" nullable="false" />
+
+        <field name="valorAprovado" column="valor_aprovado" type="decimal" scale="5" />
+        <field name="valorAprovando" column="valor_aprovando" type="decimal" scale="5" />
+        <field name="valorDepositado" column="valor_depositado" type="decimal" scale="5" />
+        <field name="valorDepositando" column="valor_depositando" type="decimal" scale="5" />
+
+        <field name="criadoEm" column="criado_em" type="datetime" />
+        <field name="atualizadoEm" column="atualizado_em" type="datetime" />
+
+        <field name="moeda" type="string" length="3" />
+        <field name="dadosAdicionais" column="dados_adicionais" type="dados_adicionais_pagamento_type" />
+
+        <one-to-many field="pagamentos" mapped-by="instrucaoPagamento" target-entity="BFOS\PagamentoBundle\Model\PagamentoInterface">
+            <cascade>
+                <cascade-remove/>
+                <cascade-refresh/>
+            </cascade>
+        </one-to-many>
+
+        <lifecycle-callbacks>
+            <lifecycle-callback type="prePersist" method="onPreSave"/>
+            <lifecycle-callback type="preUpdate" method="onPreSave" />
+            <lifecycle-callback type="postLoad" method="onPostLoad" />
+        </lifecycle-callbacks>
+    </entity>
+
+</doctrine-mapping>

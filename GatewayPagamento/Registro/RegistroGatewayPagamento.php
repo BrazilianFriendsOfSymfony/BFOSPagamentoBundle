@@ -54,7 +54,7 @@ class RegistroGatewayPagamento implements RegistroGatewayPagamentoInterface
      */
     public function get($identificador)
     {
-        if(!$this->jahRegistrado($identificador)){
+        if($this->jahRegistrado($identificador)){
             return $this->gateways[$identificador]['gateway'];
         }
         return null;

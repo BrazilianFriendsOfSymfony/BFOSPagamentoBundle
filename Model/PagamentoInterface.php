@@ -11,6 +11,7 @@
 
 namespace BFOS\PagamentoBundle\Model;
 
+use Doctrine\Common\Collections\Collection;
 
 interface PagamentoInterface
 {
@@ -41,6 +42,11 @@ interface PagamentoInterface
 
     public function getValorAprovado();
 
+    /**
+     * Retorna a transação que aprovou o pagamento.
+     *
+     * @return TransacaoFinanceiraInterface|null
+     */
     public function getTransacaoDeAprovacao();
 
     public function getValorAprovando();
@@ -49,6 +55,9 @@ interface PagamentoInterface
 
     public function getValorDepositando();
 
+    /**
+     * @return Collection
+     */
     public function getTransacoesDeDeposito();
 
     public function setValorAprovado($valor);
@@ -59,7 +68,21 @@ interface PagamentoInterface
 
     public function setValorDepositando($valor);
 
+    /**
+     * Data de vencimento para concluir o pagamento.
+     *
+     * @return \DateTime
+     */
     public function getDataVencimento();
+
+    /**
+     * Define a data limite para concluir o pagamento.
+     *
+     * @param \DateTime $data
+     *
+     * @return PagamentoInterface
+     */
+    public function setDataVencimento(\DateTime $data);
 
     /**
      * Retorna a InstrucaoPagamento a qual o pagamento pertence.
@@ -99,15 +122,78 @@ interface PagamentoInterface
 
     public function temTransacaoPendente();
 
+    /**
+     * @return boolean
+     */
     public function precisaDeAtencao();
 
-    public function estahVencido();
+    /**
+     * Indica se o pagamento está vencido.
+     *
+     * @return boolean
+     */
+    public function getVencido();
+
+    /**
+     * Indica se o pagamento está vencido.
+     *
+     * @param boolean $boolean
+     *
+     * @return PagamentoInterface
+     */
+    public function setVencido($boolean);
 
     public function setPrecisaDeAtencao($boolean);
 
-    public function setDataVencimento(\DateTime $date);
-
-    public function setVencido($boolean);
-
     public function setSituacao($situacao);
+
+    /**
+     * Adiciona uma transação ao pagamento.
+     *
+     * @param TransacaoFinanceiraInterface $transacao
+     *
+     * @return PagamentoInterface
+     */
+    public function adicionarTransacao(TransacaoFinanceiraInterface $transacao);
+
+    /**
+     * Indica se a transação já foi adicionada ao pagamento.
+     *
+     * @param TransacaoFinanceiraInterface $transacao
+     *
+     * @return PagamentoInterface
+     */
+    public function jahAdicionouTransacao(TransacaoFinanceiraInterface $transacao);
+
+    /**
+     * Define a data da última atualização do registro.
+     *
+     * @param \DateTime $atualizadoEm
+     *
+     * @return InstrucaoPagamentoInterface
+     */
+    public function setAtualizadoEm($atualizadoEm);
+
+    /**
+     * Retorna a data da última atualização do registro.
+     *
+     * @return \DateTime
+     */
+    public function getAtualizadoEm();
+
+    /**
+     * Define a data de criação do registro.
+     *
+     * @param \DateTime $criadoEm
+     *
+     * @return InstrucaoPagamentoInterface
+     */
+    public function setCriadoEm($criadoEm);
+
+    /**
+     * Retorna a data de criação do registro.
+     *
+     * @return \DateTime
+     */
+    public function getCriadoEm();
 }

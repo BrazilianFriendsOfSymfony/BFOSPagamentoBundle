@@ -9,14 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace BFOS\PagamentoBundle\Entity;
+namespace BFOS\PagamentoBundle\GatewayPagamento\Exception;
 
-use BFOS\PagamentoBundle\Model\Pagamento as BasePagamento;
 
-class Pagamento extends BasePagamento
+class GatewayPagamentoAcaoRequeridaException extends GatewayPagamentoBloqueadoException
 {
-    public function onPreSave()
-    {
-        $this->atualizadoEm = new \DateTime;
-    }
+
 }

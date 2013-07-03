@@ -9,14 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace BFOS\PagamentoBundle\Entity;
+namespace BFOS\PagamentoBundle\Exception;
 
-use BFOS\PagamentoBundle\Model\Pagamento as BasePagamento;
 
-class Pagamento extends BasePagamento
+class PagamentoInvalidoException extends \Exception
 {
-    public function onPreSave()
-    {
-        $this->atualizadoEm = new \DateTime;
-    }
+
 }

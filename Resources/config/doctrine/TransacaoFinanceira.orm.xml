@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                    https://github.com/doctrine/doctrine2/raw/master/doctrine-mapping.xsd">
+
+    <entity name="BFOS\PagamentoBundle\Entity\TransacaoFinanceira" table="bfos_transacao_financeira" change-tracking-policy="DEFERRED_EXPLICIT">
+        <id name="id" type="integer"><generator strategy="AUTO"/></id>
+
+        <field name="situacao" type="smallint" nullable="false" />
+        <field name="tipoTransacao" column="tipo_transacao" type="smallint" />
+        <field name="idRastreamento" column="id_rastreamento" type="string" length="100" nullable="true" />
+        <field name="valorProcessado" column="valor_processado" type="decimal" scale="5" />
+        <field name="valorSolicitado" column="valor_solicitado" type="decimal" scale="5" />
+        <field name="dadosAdicionais" column="dados_adicionais" type="dados_adicionais_pagamento_type" />
+        <field name="justificativaSituacao" column="justificativa_situacao" type="string" length="100" nullable="true" />
+        <field name="referencia" column="referencia" type="string" length="100" nullable="true" />
+        <field name="codigoResposta" column="response_code" type="string" length="100" nullable="true" />
+        <field name="criadoEm" column="criado_em" type="datetime" />
+        <field name="atualizadoEm" column="atualizado_em" type="datetime" />
+
+        <many-to-one field="pagamento" target-entity="BFOS\PagamentoBundle\Model\PagamentoInterface" inversed-by="transacoes">
+            <join-column name="pagamento_id" nullable="true" referenced-column-name="id" on-delete="CASCADE"/>
+        </many-to-one>
+
+        <lifecycle-callbacks>
+            <lifecycle-callback type="prePersist" method="onPrePersist"/>
+            <lifecycle-callback type="preUpdate" method="onPrePersist" />
+            <lifecycle-callback type="postLoad" method="onPostLoad" />
+        </lifecycle-callbacks>
+
+    </entity>
+
+</doctrine-mapping>

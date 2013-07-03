@@ -24,9 +24,17 @@ class RegistrarGatewaysPagamentoPass implements CompilerPassInterface
             return;
         }
 
+        $gateways = array();
+
         $def = $container->findDefinition('bfos_pagamento.registro_gateway_pagamento');
         foreach ($container->findTaggedServiceIds('bfos_pagamento.gateway_pagamento') as $id => $attr) {
-            $def->addMethodCall('registrar', array($attr[0]['identificador'], new Reference($id), $attr[0]['etiqueta']));
+            $identificador = $attr[0]['identificador'];
+            $etiqueta = $attr[0]['etiqueta'];
+            $def->addMethodCall('registrar', array($identificador, new Reference($id), $etiqueta));
+
+            $gateways[$identificador] = $etiqueta;
         }
+
+        $container->setParameter('bfos_pagamento.gateways', $gateways);
     }
 }

@@ -12,26 +12,40 @@
 namespace BFOS\PagamentoBundle\Model;
 
 
+use BFOS\PagamentoBundle\Entity\DadosAdicionais;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 class InstrucaoPagamento implements InstrucaoPagamentoInterface
 {
     protected $id;
+    protected $situacao;
     protected $referencia;
     protected $gatewayPagamento;
-    protected $situacao;
     protected $valorTotal;
     protected $valorAprovando;
     protected $valorAprovado;
     protected $valorDepositado;
+    protected $valorDepositando;
     protected $pagamentos;
+    /** @var  DadosAdicionaisInterface $dadosAdicionais */
+    protected $dadosAdicionais;
+    protected $moeda;
+    protected $criadoEm;
+    protected $atualizadoEm;
 
     public function __construct()
     {
         $this->situacao = InstrucaoPagamentoInterface::SITUACAO_NOVA;
         $this->valorTotal = 0.0;
+        $this->valorAprovado = 0.0;
+        $this->valorAprovando = 0.0;
+        $this->valorDepositado = 0.0;
+        $this->valorDepositando = 0.0;
         $this->pagamentos = new ArrayCollection();
+        $this->moeda = 'BRL';
+        $this->criadoEm = new \DateTime;
+        $this->dadosAdicionais = new DadosAdicionais();
     }
 
     /**
@@ -127,10 +141,19 @@ class InstrucaoPagamento implements InstrucaoPagamentoInterface
         return null;
     }
 
+    /**
+     * Indica se há transação pendente.
+     *
+     * @return boolean
+     */
+    public function temTransacaoPendente()
+    {
+        return null !== $this->getTransacaoPendente();
+    }
+
 
     /**
-     * @param int $situacao
-     * @return InstrucaoPagamentoInterface
+     * @inheritdoc
      */
     public function setSituacao($situacao)
     {
@@ -215,5 +238,88 @@ class InstrucaoPagamento implements InstrucaoPagamentoInterface
         return $this->valorDepositado;
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function getValorDepositando()
+    {
+        return $this->valorDepositando;
+    }
 
+    /**
+     * @inheritdoc
+     */
+    public function setValorDepositando($valor)
+    {
+        $this->valorDepositando = $valor;
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getMoeda()
+    {
+        return $this->moeda;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setMoeda($moeda)
+    {
+        $this->moeda = $moeda;
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getDadosAdicionais()
+    {
+        return $this->dadosAdicionais;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setDadosAdicionais($dados)
+    {
+        $this->dadosAdicionais = $dados;
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setAtualizadoEm($atualizadoEm)
+    {
+        $this->atualizadoEm = $atualizadoEm;
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getAtualizadoEm()
+    {
+        return $this->atualizadoEm;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setCriadoEm($criadoEm)
+    {
+        $this->criadoEm = $criadoEm;
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getCriadoEm()
+    {
+        return $this->criadoEm;
+    }
 }

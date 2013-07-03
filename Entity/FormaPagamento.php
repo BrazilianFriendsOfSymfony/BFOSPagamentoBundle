@@ -11,9 +11,9 @@
 
 namespace BFOS\PagamentoBundle\Entity;
 
-use BFOS\PagamentoBundle\Model\Pagamento as BasePagamento;
+use BFOS\PagamentoBundle\Model\FormaPagamento as Base;
 
-class Pagamento extends BasePagamento
+class FormaPagamento extends Base
 {
     public function onPreSave()
     {

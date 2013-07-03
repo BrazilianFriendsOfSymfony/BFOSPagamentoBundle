@@ -1,0 +1,25 @@
+{% block bfos_pagamento_forma_pagamento_type_widget %}
+    {% spaceless %}
+        {% if prototypes is defined %}
+            {% for key,proto in prototypes %}
+                {% set attr = attr|merge({ ('prototype-'~key) : form_row(proto) }) %}
+            {% endfor %}
+        {% endif %}
+        {% set attr = attr|merge({'class':'js_forma_pagamento_form_container'}) %}
+        <div {{ block('widget_container_attributes') }} >
+            {% if form.parent is empty %}
+                {{ form_errors(form) }}
+            {% endif %}
+            {{ form_row(form.ativo) }}
+            {{ form_row(form.gatewayPagamento) }}
+            {% if form.configuracao is defined %}
+                <div class="control-group js_gateway_configuracao_container">
+                    {{ form_label(form.configuracao) }}
+                    {{ form_errors(form.configuracao) }}
+                    {{ form_widget(form.configuracao) }}
+                </div>
+            {% endif %}
+            {{ form_rest(form) }}
+        </div>
+    {% endspaceless %}
+{% endblock %}

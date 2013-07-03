@@ -9,14 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace BFOS\PagamentoBundle\Entity;
+namespace BFOS\PagamentoBundle\Event;
 
-use BFOS\PagamentoBundle\Model\Pagamento as BasePagamento;
 
-class Pagamento extends BasePagamento
+class PagamentoEvents
 {
-    public function onPreSave()
-    {
-        $this->atualizadoEm = new \DateTime;
-    }
+    const SITUACAO_MUDOU = 'bfos.pagamento.situacao_mudou';
 }
