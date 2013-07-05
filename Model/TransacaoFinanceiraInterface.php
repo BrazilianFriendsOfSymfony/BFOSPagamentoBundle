@@ -27,6 +27,7 @@ interface TransacaoFinanceiraInterface
     const TIPO_TRANSACAO_ESTORNO_APROVACAO = 5;
     const TIPO_TRANSACAO_ESTORNO_CREDITO = 6;
     const TIPO_TRANSACAO_ESTORNO_DEPOSITO = 7;
+    const TIPO_TRANSACAO_CONSULTA = 8;
 
     /**
      * Id da transacao.

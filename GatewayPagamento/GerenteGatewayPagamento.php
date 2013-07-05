@@ -30,6 +30,7 @@ use BFOS\PagamentoBundle\Model\TransacaoFinanceiraInterface;
 use BFOS\PagamentoBundle\Utils\Number;
 use Doctrine\DBAL\LockMode;
 use Doctrine\ORM\EntityManager;
+use Doctrine\Tests\Common\Annotations\Null;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class GerenteGatewayPagamento implements GerenteGatewayPagamentoInterface
@@ -61,7 +62,7 @@ class GerenteGatewayPagamento implements GerenteGatewayPagamentoInterface
     /**
      * @inheritdoc
      */
-    public function criarPagamento($instrucaoPagamentoId, $valor, $pagamento = null)
+    public function criarPagamento($instrucaoPagamentoId, $valor = null)
     {
         $instrPagto = $this->getInstrucaoPagamento($instrucaoPagamentoId, false);
 
@@ -69,22 +70,17 @@ class GerenteGatewayPagamento implements GerenteGatewayPagamentoInterface
             throw new InstrucaoPagamentoInvalidaException('A instrução de pagamento deve estar em situação SITUACAO_VALIDA.');
         }
 
-        // FIXME: Is it practical to check this at all? There can be many payments, credits, etc.
-        //        Verify that this is consistent with the checks related to transactions
-//        if (Number::compare($valor, $instruction->getAmount()) === 1) {
-//            throw new Exception('The Payment\'s target amount must not be greater than the PaymentInstruction\'s amount.');
-//        }
-
-        if(is_null($pagamento)){
-            $class = $this->options['pagamento_class'];
-            /** @var PagamentoInterface $pagamento */
-            $pagamento = new $class();
+        if (is_null($valor)) {
+            $valor = $instrPagto->getValorTotal() - $instrPagto->getValorDepositado();
         }
+
+        $class = $this->options['pagamento_class'];
+        /** @var PagamentoInterface $pagamento */
+        $pagamento = new $class();
         $pagamento->setInstrucaoPagamento($instrPagto);
         $pagamento->setValorEsperado($valor);
 
         $this->entityManager->persist($pagamento);
-//        $this->entityManager->flush();
 
         return $pagamento;
     }

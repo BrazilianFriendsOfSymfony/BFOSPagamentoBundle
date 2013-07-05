@@ -25,12 +25,10 @@ interface GerenteGatewayPagamentoInterface
      *
      * @param integer                 $instrucaoPagamentoId
      * @param float                   $valor
-     * @param PagamentoInterface|null $pagamento O objeto base utilizado para criar o pagamento.
-     *                                           Útil quando a implementação difere do oferecido pelo bundle.
      *
      * @return PagamentoInterface
      */
-    public function criarPagamento($instrucaoPagamentoId, $valor, $pagamento = null);
+    public function criarPagamento($instrucaoPagamentoId, $valor);
 
     /**
      * Este método executa uma transação de aprovação de um pagamento.

@@ -52,6 +52,13 @@ interface GatewayPagamentoInterface
     public function aprovar(TransacaoFinanceiraInterface $transaccao, $jahTentada);
 
     /**
+     * Indica se o gateway suporta a ação Aprovar.
+     *
+     * @return boolean
+     */
+    public function suportaAprovar();
+
+    /**
      * This method executes a deposit transaction without prior approval
      * (aka "sale", or "authorization with capture" transaction).
      *
@@ -65,6 +72,34 @@ interface GatewayPagamentoInterface
      * @return void
      */
     public function aprovarEDepositar(TransacaoFinanceiraInterface $transacao, $jahTentada);
+
+    /**
+     * Indica se o gateway suporta a ação AprovarEDepositar.
+     *
+     * @return boolean
+     */
+    public function suportaAprovarEDepositar();
+
+    /**
+     * This method executes a deposit transaction (aka capture transaction).
+     *
+     * This method requires that the Payment has already been approved in
+     * a prior transaction.
+     *
+     * A typical use case are Credit Card payments.
+     *
+     * @param TransacaoFinanceiraInterface $transacao
+     * @param boolean $jahTentada
+     * @return void
+     */
+    public function depositar(TransacaoFinanceiraInterface $transacao, $jahTentada);
+
+    /**
+     * Indica se o gateway suporta a ação Depositar.
+     *
+     * @return boolean
+     */
+    public function suportaDepositar();
 
     /**
      * This method checks whether all required parameters exist in the given
