@@ -36,15 +36,11 @@
 
         $('body').delegate('.js_forma_pagamento_checkout_form_container .js_opcao_forma_pagamento input[type="radio"]', 'change', function(e){
 //            atualizarConfiguracao(form_selector, select_selector, e);
-            console.debug('MUDOU VALOR DO RAIO');
-            console.debug($(this).val());
             var container = $(this).closest('.js_forma_pagamento_checkout_form_container');
             var prototype = container.attr('prototype-'+$(this).val());
             if(typeof prototype != 'undefined') {
-                console.debug(prototype);
                 container.find('.js_gateway_configuracao_container').html(prototype);
             } else {
-                console.debug('NAO TEM CONFIG');
                 container.find('.js_gateway_configuracao_container').html('');
             }
         });
