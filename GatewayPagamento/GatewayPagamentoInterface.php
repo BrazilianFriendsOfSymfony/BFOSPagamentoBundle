@@ -133,4 +133,20 @@ interface GatewayPagamentoInterface
      * @return boolean
      */
     public function ehConfiguravel();
+
+    /**
+     * Retorna o nome do FormType para configuração do gateway.
+     * Ao finalizar um processo de checkout, o visitante normalmente tem a
+     * opção de escolher como quer pagar. Esse form deve ser utilizado
+     * caso o meio de pagamento exija mais informação do usuário.
+     *
+     * @return string
+     */
+    public function getConfiguracaoCheckoutFormType();
+
+    /**
+     * @return boolean
+     */
+    public function ehConfiguravelNoCheckout();
+
 }

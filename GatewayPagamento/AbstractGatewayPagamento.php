@@ -49,4 +49,22 @@ abstract class AbstractGatewayPagamento implements GatewayPagamentoInterface
     {
         throw new FuncaoNaoSuportadaException('Método validarInstrucaoPagamento() não é suportado pelo meio de pagamento');
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function getConfiguracaoCheckoutFormType()
+    {
+        return null;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function ehConfiguravelNoCheckout()
+    {
+        return false;
+    }
+
+
 }

@@ -23,3 +23,29 @@
         </div>
     {% endspaceless %}
 {% endblock %}
+
+{% block bfos_pagamento_forma_pagamento_checkout_choice_widget %}
+    {% spaceless %}
+        <h3>TESTE bfos_pagamento_forma_pagamento_checkout_choice</h3>
+        {% if prototypes is defined %}
+            {% for key,proto in prototypes %}
+                {% set attr = attr|merge({ ('prototype-'~key) : form_row(proto) }) %}
+            {% endfor %}
+        {% endif %}
+        {% set attr = attr|merge({'class':'js_forma_pagamento_checkout_form_container'}) %}
+        <div {{ block('widget_container_attributes') }} >
+            {% if form.parent is empty %}
+                {{ form_errors(form) }}
+            {% endif %}
+            {{ form_row(form.formaPagamentoId) }}
+            <div class="control-group js_gateway_configuracao_container {% if form.configuracao is not defined %}sem-configuracao{% endif %}">
+            {% if form.configuracao is defined %}
+                    {{ form_label(form.configuracao) }}
+                    {{ form_errors(form.configuracao) }}
+                    {{ form_widget(form.configuracao) }}
+            {% endif %}
+            </div>
+            {{ form_rest(form) }}
+        </div>
+    {% endspaceless %}
+{% endblock %}

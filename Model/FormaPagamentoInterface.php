@@ -15,6 +15,18 @@ namespace BFOS\PagamentoBundle\Model;
 interface FormaPagamentoInterface
 {
     /**
+     * @return int
+     */
+    public function getId();
+
+    /**
+     * @param int $id
+     *
+     * @return FormaPagamentoInterface
+     */
+    public function setId($id);
+
+    /**
      * Indica se a forma de pagamento está ativa.
      *
      * @return boolean

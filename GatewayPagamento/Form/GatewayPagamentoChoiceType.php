@@ -15,6 +15,11 @@ namespace BFOS\PagamentoBundle\GatewayPagamento\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
+/**
+ * Class GatewayPagamentoChoiceType
+ *
+ * @package BFOS\PagamentoBundle\GatewayPagamento\Form
+ */
 class GatewayPagamentoChoiceType extends AbstractType
 {
     protected $gateways;

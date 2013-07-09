@@ -15,13 +15,17 @@
         <parameter key="bfos_pagamento.servico_de_criptografia.mode">ctr</parameter>
 
         <parameter key="bfos_pagamento.gateway_pagamento_choice_type.class">BFOS\PagamentoBundle\GatewayPagamento\Form\GatewayPagamentoChoiceType</parameter>
+
+        <parameter key="bfos_pagamento.forma_pagamento_checkout_choice_type.class">BFOS\PagamentoBundle\Form\Type\FormaPagamentoCheckoutChoiceType</parameter>
         <parameter key="bfos_pagamento.forma_pagamento_type.class">BFOS\PagamentoBundle\Form\Type\FormaPagamentoType</parameter>
         <parameter key="bfos_pagamento.forma_pagamento.class">BFOS\PagamentoBundle\Entity\FormaPagamento</parameter>
+        <parameter key="bfos_pagamento.gerente_forma_pagamento.class">BFOS\PagamentoBundle\FormaPagamento\GerenteFormaPagamento</parameter>
 
         <parameter key="bfos_pagamento.resultado.class">BFOS\PagamentoBundle\GatewayPagamento\Resultado</parameter>
         <parameter key="bfos_pagamento.instrucao_pagamento.class">BFOS\PagamentoBundle\Entity\InstrucaoPagamento</parameter>
         <parameter key="bfos_pagamento.pagamento.class">BFOS\PagamentoBundle\Entity\Pagamento</parameter>
         <parameter key="bfos_pagamento.transacao_financeira.class">BFOS\PagamentoBundle\Entity\TransacaoFinanceira</parameter>
+        <parameter key="bfos_pagamento.forma_pagamento.class">BFOS\PagamentoBundle\Entity\FormaPagamento</parameter>
     </parameters>
 
     <services>
@@ -29,6 +33,12 @@
         <service id="bfos_pagamento.twig_extension" class="%bfos_pagamento.twig_extension.class%">
             <tag name="twig.extension"/>
             <argument type="service" id="service_container" />
+        </service>
+
+        <!--Parcelamento Choice Type-->
+        <service id="bfos_pagamento.gateway_pagamento_choice_type" class="%bfos_pagamento.gateway_pagamento_choice_type.class%">
+            <argument>%bfos_pagamento.gateways%</argument>
+            <tag name="form.type" alias="bfos_pagamento_gateway_pagamento_choice" />
         </service>
 
         <!--Registro Gateway Pagamento-->
@@ -61,11 +71,26 @@
             <tag name="form.type" alias="bfos_pagamento_gateway_pagamento_choice" />
         </service>
 
+        <!--Forma Pagamento GERENTE -->
+        <service id="bfos_pagamento.gerente_forma_pagamento" class="%bfos_pagamento.gerente_forma_pagamento.class%">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="collection">
+                <argument key="forma_pagamento_class">%bfos_pagamento.forma_pagamento.class%</argument>
+            </argument>
+        </service>
+
         <!--Forma Pagamento Type-->
         <service id="bfos_pagamento.forma_pagamento_type" class="%bfos_pagamento.forma_pagamento_type.class%">
             <argument>%bfos_pagamento.forma_pagamento.class%</argument>
             <argument type="service" id="bfos_pagamento.registro_gateway_pagamento" />
             <tag name="form.type" alias="bfos_pagamento_forma_pagamento_type" />
+        </service>
+
+        <!--Forma Pagamento CHECKOUT Choice Type-->
+        <service id="bfos_pagamento.forma_pagamento_checkout_choice_type" class="%bfos_pagamento.forma_pagamento_checkout_choice_type.class%">
+            <argument type="service" id="bfos_pagamento.registro_gateway_pagamento" />
+            <argument type="service" id="bfos_pagamento.gerente_forma_pagamento" />
+            <tag name="form.type" alias="bfos_pagamento_forma_pagamento_checkout_choice" />
         </service>
 
     </services>
