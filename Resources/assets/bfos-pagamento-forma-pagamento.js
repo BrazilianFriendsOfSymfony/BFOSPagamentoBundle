@@ -17,11 +17,13 @@
 }(function ($) {
     'use strict';
 
-    function atualizarConfiguracao(form_selector, selector, event) {
+    function atualizarConfiguracao(form_selector, selector, forceUpdate) {
         var form = $(form_selector);
         var gatewayPagamento = form.find(selector).val();
         var prototype = $(form_selector).attr('prototype-' + gatewayPagamento);
-        form.find('.js_gateway_configuracao_container').html(prototype);
+        if (true == forceUpdate || form.find('.js_gateway_configuracao_container').html()=='') {
+            form.find('.js_gateway_configuracao_container').html(prototype);
+        }
     }
 
     $(function(){
@@ -31,9 +33,10 @@
         var selector = form_selector + ' ' + select_selector;
 
         $('body').delegate(selector, 'change', function(e){
-            atualizarConfiguracao(form_selector, select_selector, e);
+            atualizarConfiguracao(form_selector, select_selector, true);
         });
-        atualizarConfiguracao(form_selector, select_selector);
+
+        atualizarConfiguracao(form_selector, select_selector, false);
 
         $('body').delegate('.js_forma_pagamento_checkout_form_container .js_opcao_forma_pagamento input[type="radio"]', 'change', function(e){
             var container = $(this).closest('.js_forma_pagamento_checkout_form_container');
