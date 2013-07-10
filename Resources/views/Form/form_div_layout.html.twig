@@ -12,13 +12,13 @@
             {% endif %}
             {{ form_row(form.ativo) }}
             {{ form_row(form.gatewayPagamento) }}
+            <div class="control-group js_gateway_configuracao_container">
             {% if form.configuracao is defined %}
-                <div class="control-group js_gateway_configuracao_container">
-                    {{ form_label(form.configuracao) }}
-                    {{ form_errors(form.configuracao) }}
-                    {{ form_widget(form.configuracao) }}
-                </div>
+                {{ form_label(form.configuracao) }}
+                {{ form_errors(form.configuracao) }}
+                {{ form_widget(form.configuracao) }}
             {% endif %}
+            </div>
             {{ form_rest(form) }}
         </div>
     {% endspaceless %}
