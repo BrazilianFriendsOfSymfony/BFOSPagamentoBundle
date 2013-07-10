@@ -26,6 +26,13 @@ interface GerenteFormaPagamentoInterface
     public function getAtivas();
 
     /**
+     * Retorna todas as formas de pagamento cadastradas no sistema, incluindo as inativas.
+     *
+     * @return array
+     */
+    public function getTodas();
+
+    /**
      * @param int $id
      *
      * @return FormaPagamentoInterface

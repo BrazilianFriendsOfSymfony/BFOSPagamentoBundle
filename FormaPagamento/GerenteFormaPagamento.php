@@ -59,6 +59,15 @@ class GerenteFormaPagamento implements GerenteFormaPagamentoInterface
     }
 
     /**
+     * @inheritdoc
+     */
+    public function getTodas()
+    {
+        return $this->getFormaPagamentoRepository()->findAll();
+    }
+
+
+    /**
      * @param int $id
      *
      * @return FormaPagamentoInterface
