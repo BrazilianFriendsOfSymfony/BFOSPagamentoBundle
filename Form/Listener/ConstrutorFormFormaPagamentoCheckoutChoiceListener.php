@@ -72,14 +72,14 @@ class ConstrutorFormFormaPagamentoCheckoutChoiceListener implements EventSubscri
          */
         $data = $event->getData();
 
-        if (null === $data || null === $data->getGatewayPagamento()) {
+        if (null === $data || null === $data['formaPagamentoId']) {
             return;
         }
 
         $this->adicionaConfiguracaoDosCampos(
             $event->getForm(),
             $data['formaPagamentoId'],
-            isset($data['configuracao']) ? $data['configuracao'] : null
+            isset($data['configuracao']) ? $data['configuracao'] : array()
         );
     }
 

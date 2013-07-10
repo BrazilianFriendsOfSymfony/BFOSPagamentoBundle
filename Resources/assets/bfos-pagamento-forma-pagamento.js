@@ -26,6 +26,16 @@
         }
     }
 
+    function atualizarConfiguracaoCheckout($this) {
+        var container = $($this).closest('.js_forma_pagamento_checkout_form_container');
+        var prototype = container.attr('prototype-'+$($this).val());
+        if(typeof prototype != 'undefined') {
+            container.find('.js_gateway_configuracao_container').html(prototype);
+        } else {
+            container.find('.js_gateway_configuracao_container').html('');
+        }
+    }
+
     $(function(){
 
         var form_selector = '#bfos_pagamento_forma_pagamento_type';
@@ -39,15 +49,10 @@
         atualizarConfiguracao(form_selector, select_selector, false);
 
         $('body').delegate('.js_forma_pagamento_checkout_form_container .js_opcao_forma_pagamento input[type="radio"]', 'change', function(e){
-            var container = $(this).closest('.js_forma_pagamento_checkout_form_container');
-            var prototype = container.attr('prototype-'+$(this).val());
-            if(typeof prototype != 'undefined') {
-                container.find('.js_gateway_configuracao_container').html(prototype);
-            } else {
-                container.find('.js_gateway_configuracao_container').html('');
-            }
+            atualizarConfiguracaoCheckout(this);
         });
 
+        atualizarConfiguracaoCheckout($('.js_forma_pagamento_checkout_form_container .js_opcao_forma_pagamento input[type="radio"]:checked'));
     });
 
 }));
