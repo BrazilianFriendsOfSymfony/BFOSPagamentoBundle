@@ -14,6 +14,13 @@ Requisitos
     - jQuery
     - RequireJS
 
+Instalando
+----------
+
+- crie o parâmetro para servir
+
+    bfos_pagamento.servico_de_criptografia.secret: e37secret-e37secret-e37secret-fim
+
 TWIG Funções e Filtros
 ----------------------
 
