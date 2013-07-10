@@ -1,0 +1,4 @@
+bfos_pagamento:
+    form:
+        configuracao: "Configuração"
+        gateway: "Gateway"
