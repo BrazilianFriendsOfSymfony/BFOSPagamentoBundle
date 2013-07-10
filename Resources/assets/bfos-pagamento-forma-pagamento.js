@@ -33,9 +33,9 @@
         $('body').delegate(selector, 'change', function(e){
             atualizarConfiguracao(form_selector, select_selector, e);
         });
+        atualizarConfiguracao(form_selector, select_selector);
 
         $('body').delegate('.js_forma_pagamento_checkout_form_container .js_opcao_forma_pagamento input[type="radio"]', 'change', function(e){
-//            atualizarConfiguracao(form_selector, select_selector, e);
             var container = $(this).closest('.js_forma_pagamento_checkout_form_container');
             var prototype = container.attr('prototype-'+$(this).val());
             if(typeof prototype != 'undefined') {
