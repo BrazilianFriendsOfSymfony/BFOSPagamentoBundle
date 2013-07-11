@@ -58,10 +58,12 @@ class FormaPagamentoCheckoutChoiceType extends AbstractType
             $configuracoes = $options['configuracoes'];
         }
         $choices = array();
+        $gatewaysDasFormas = array();
         /** @var FormaPagamentoInterface $forma */
         foreach ($this->formasPagamento as $forma) {
             $identGateway = $forma->getGatewayPagamento();
             $choices[$forma->getId()] = $this->registro->getEtiqueta($identGateway);
+            $gatewaysDasFormas[$forma->getId()] = $identGateway;
             unset($identGateway);
         }
 
@@ -109,6 +111,7 @@ class FormaPagamentoCheckoutChoiceType extends AbstractType
         }
 
         $builder->setAttribute('prototypes', $prototypesForma);
+        $builder->setAttribute('gateways', $gatewaysDasFormas);
 
     }
 
@@ -117,8 +120,9 @@ class FormaPagamentoCheckoutChoiceType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $this->vars['prototypes'] = array();
-        $this->vars['attr'] = array('class'=>'js_bfos_pagamento_forma_pagamento_checkout_choice');
+        $view->vars['gateways'] = $form->getConfig()->getAttribute('gateways');
+        $view->vars['prototypes'] = array();
+//        $view->vars['attr'] = array('class'=>'js_bfos_pagamento_forma_pagamento_checkout_choice');
 
         foreach ($form->getConfig()->getAttribute('prototypes') as $nome => $prototypes) {
             $view->vars['prototypes'][$nome] = $prototypes->createView($view);

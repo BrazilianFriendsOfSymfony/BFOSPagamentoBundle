@@ -53,6 +53,15 @@
         });
 
         atualizarConfiguracaoCheckout($('.js_forma_pagamento_checkout_form_container .js_opcao_forma_pagamento input[type="radio"]:checked'));
+
+        $('.js_opcao_forma_pagamento input[type="radio"]').each(function(idx, elem){
+            var formaPagtoId = $(elem).val();
+            var form = $(elem).closest('.js_forma_pagamento_checkout_form_container');
+            var gateway = form.attr('gateway-'+formaPagtoId);
+            if( gateway.length > 0) {
+                $(elem).attr('gateway', gateway);
+            }
+        });
     });
 
 }));

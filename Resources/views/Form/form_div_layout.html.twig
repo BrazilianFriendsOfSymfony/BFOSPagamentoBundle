@@ -31,6 +31,13 @@
                 {% set attr = attr|merge({ ('prototype-'~key) : form_row(proto) }) %}
             {% endfor %}
         {% endif %}
+        {% if gateways is defined %}
+            {% for key,gateway in gateways %}
+                {% set attr = attr|merge({ ('gateway-'~key) : gateway }) %}
+            {% endfor %}
+        {% else %}
+            <h1>NAO TEM</h1>
+        {% endif %}
         {% set attr = attr|merge({'class':'js_forma_pagamento_checkout_form_container'}) %}
         <div {{ block('widget_container_attributes') }} >
             {% if form.parent is empty %}
