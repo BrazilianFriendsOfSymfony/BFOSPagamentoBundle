@@ -20,6 +20,17 @@ use BFOS\PagamentoBundle\Model\PagamentoInterface;
 interface GerenteGatewayPagamentoInterface
 {
     /**
+     * Este método criará um objeto InstrucaoPagamento
+     * que poderá ser utilizado para realizar
+     *
+     * @param string|null $gatewayPagamento
+     * @param float|null $valor
+     *
+     * @return InstrucaoPagamentoInterface
+     */
+    public function criarInstrucaoPagamento($gatewayPagamento = null, $valor = null);
+
+    /**
      * Este método criará um objeto Pagamento para a InstrucaoPagamento
      * que poderá ser utilizado para realizar transações (aprovar e depositar)
      *

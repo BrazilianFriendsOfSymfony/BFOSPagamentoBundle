@@ -75,11 +75,29 @@ interface InstrucaoPagamentoInterface
     public function getGatewayPagamento();
 
     /**
+     * Define o identificador do meio de pagamento utilizado.
+     *
+     * @param string $gatewayPagamento
+     *
+     * @return TransacaoFinanceiraInterface
+     */
+    public function setGatewayPagamento($gatewayPagamento);
+
+    /**
      * Valor total que deverá ser recebido.
      *
      * @return float
      */
     public function getValorTotal();
+
+    /**
+     * Define o valor total que deverá ser recebido.
+     *
+     * @param float $valorTotal
+     *
+     * @return TransacaoFinanceiraInterface
+     */
+    public function setValorTotal($valorTotal);
 
     /**
      * Retorna a lista de pagamentos associados a instrução.

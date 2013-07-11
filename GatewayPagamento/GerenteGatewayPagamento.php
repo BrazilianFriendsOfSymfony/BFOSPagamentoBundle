@@ -62,6 +62,20 @@ class GerenteGatewayPagamento implements GerenteGatewayPagamentoInterface
     /**
      * @inheritdoc
      */
+    public function criarInstrucaoPagamento($gatewayPagamento = null, $valor = null)
+    {
+        $class = $this->options['instrucao_pagamento_class'];
+        /** @var InstrucaoPagamentoInterface $instrPagto */
+        $instrPagto = new $class();
+        $instrPagto->setValorTotal($valor);
+        $instrPagto->setGatewayPagamento($gatewayPagamento);
+        return $instrPagto;
+    }
+
+
+    /**
+     * @inheritdoc
+     */
     public function criarPagamento($instrucaoPagamentoId, $valor = null)
     {
         $instrPagto = $this->getInstrucaoPagamento($instrucaoPagamentoId, false);
