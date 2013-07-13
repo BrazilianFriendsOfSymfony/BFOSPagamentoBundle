@@ -54,3 +54,55 @@ Esta função ainda aceita um terceiro parâmetro com opções de controlar a ex
             possíveis ao se clicar no link.
         template:
             possibilita definir qual será a template utilizada para renderizar o parcelamento.
+
+
+
+CRIANDO UM FORMULÁRIO PARA ESCOLHER A FORMA DE PAGAMENTO
+--------------------------------------------------------
+
+Veja o exemplo abaixo, utilizado em uma loja virtual
+
+
+    use BFOS\PagamentoBundle\Parcelamento\Form\Type\ParcelamentoType;
+    use BFOS\PagamentoBundle\Utils\ParcelamentoConfiguracao;
+    use Symfony\Component\Form\AbstractType;
+    use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+    use Symfony\Component\Form\FormBuilderInterface;
+
+    class EscolhaFormaPagamentoPedidoType extends AbstractType
+    {
+        protected $configuracao;
+        protected $valor;
+
+        public function __construct(ParcelamentoConfiguracao $configuracao, $valor)
+        {
+            $this->configuracao = $configuracao;
+            $this->valor = $valor;
+        }
+
+        public function buildForm(FormBuilderInterface $builder, array $options)
+        {
+            $builder->add(
+                'formaPagamento',
+                'bfos_pagamento_forma_pagamento_checkout_choice',
+                array(
+                    'label'         => ' ',
+                    'configuracoes' => array(
+                        'pagseguro' => array(
+                            'configuracao_checkout_form' => new ParcelamentoType($this->configuracao, $this->valor)
+                        )
+                    )
+                )
+            );
+        }
+
+        public function getName()
+        {
+            return 'escolha_forma_pagamento_pedido_type';
+        }
+    }
+
+Perceba que é possível passar configurações adicionais ao Type bfos_pagamento_forma_pagamento_checkout_choice .
+Com isso, e a utilização do Javascript em Resources/assets, ele exibirá o formulário passado quando a forma de
+pagamento do gateway 'pagseguro' for selecionada.
+
