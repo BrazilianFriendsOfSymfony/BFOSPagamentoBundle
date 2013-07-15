@@ -56,10 +56,10 @@ class DadosAdicionais implements DadosAdicionaisInterface
         $this->data[$name] = array($value, $encrypt, $persist);
     }
 
-    public function obter($name)
+    public function obter($name, $padrao = null)
     {
         if (!isset($this->data[$name])) {
-            return null;
+            return $padrao;
 //            throw new \InvalidArgumentException(sprintf('There is no data with key "%s".', $name));
         }
 

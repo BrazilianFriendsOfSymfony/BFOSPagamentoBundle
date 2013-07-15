@@ -21,7 +21,14 @@ interface DadosAdicionaisInterface
     function ehNecessariaCriptografia($nome);
     function remover($nome);
     function adicionar($nome, $valor, $criptografar = true);
-    function obter($nome);
+
+    /**
+     * @param      $nome
+     * @param mixed $padrao Valor que será retornado caso a propriedade não seja encontrada.
+     *
+     * @return mixed
+     */
+    function obter($nome, $padrao = null);
     function tem($nome);
     function todos();
     function igual(DadosAdicionaisInterface $dados);
