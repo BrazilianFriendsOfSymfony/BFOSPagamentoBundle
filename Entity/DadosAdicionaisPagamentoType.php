@@ -41,7 +41,7 @@ class DadosAdicionaisPagamentoType extends ObjectType
 
         $reflection = new \ReflectionProperty($dadosAdicionais, 'data');
         $reflection->setAccessible(true);
-        $data = clone $reflection->getValue($dadosAdicionais);
+        $data = $reflection->getValue($dadosAdicionais);
         $reflection->setAccessible(false);
 
         foreach ($data as $name => $value) {
