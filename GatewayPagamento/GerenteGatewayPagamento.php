@@ -162,7 +162,11 @@ class GerenteGatewayPagamento implements GerenteGatewayPagamentoInterface
 
                 $this->dispararEventoMudancaSituacaoPagamento($pagamento, $oldState);
 
-                return $this->construirResultadoTransacaoFinanceira($transacao, ResultadoInterface::SITUACAO_SUCESSO, GatewayPagamentoInterface::JUSTIFICATIVA_SUCESSO);
+                $this->entityManager->persist($pagamento);
+                $this->entityManager->persist($instrucao);
+                $this->entityManager->persist($transacao);
+
+                $result = $this->construirResultadoTransacaoFinanceira($transacao, ResultadoInterface::SITUACAO_SUCESSO, GatewayPagamentoInterface::JUSTIFICATIVA_SUCESSO);
             } else {
                 $pagamento->setSituacao(PagamentoInterface::SITUACAO_FALHOU);
                 $pagamento->setValorAprovando(0.0);
@@ -171,7 +175,11 @@ class GerenteGatewayPagamento implements GerenteGatewayPagamentoInterface
 
                 $this->dispararEventoMudancaSituacaoPagamento($pagamento, $oldState);
 
-                return $this->construirResultadoTransacaoFinanceira($transacao, ResultadoInterface::SITUACAO_FALHOU, $transacao->getJustificativaSituacao());
+                $this->entityManager->persist($pagamento);
+                $this->entityManager->persist($instrucao);
+                $this->entityManager->persist($transacao);
+
+                $result = $this->construirResultadoTransacaoFinanceira($transacao, ResultadoInterface::SITUACAO_FALHOU, $transacao->getJustificativaSituacao());
             }
         } catch (GatewayPagamentoException $ex) {
             $pagamento->setSituacao(PagamentoInterface::SITUACAO_FALHOU);
@@ -181,7 +189,9 @@ class GerenteGatewayPagamento implements GerenteGatewayPagamentoInterface
 
             $this->dispararEventoMudancaSituacaoPagamento($pagamento, $oldState);
 
-            return $this->construirResultadoTransacaoFinanceira($transacao, ResultadoInterface::SITUACAO_FALHOU, $transacao->getJustificativaSituacao());
+
+
+            $result = $this->construirResultadoTransacaoFinanceira($transacao, ResultadoInterface::SITUACAO_FALHOU, $transacao->getJustificativaSituacao());
         } catch (GatewayPagamentoBloqueadoException $blocked) {
             $transacao->setSituacao(TransacaoFinanceiraInterface::SITUACAO_PENDENTE);
 
@@ -199,9 +209,14 @@ class GerenteGatewayPagamento implements GerenteGatewayPagamentoInterface
             $result->setException($blocked);
             $result->setRecuperavel(true);
 
-            return $result;
+
         }
-        
+
+        $this->entityManager->persist($pagamento);
+        $this->entityManager->persist($instrucao);
+        $this->entityManager->persist($transacao);
+
+        return $result;
     }
 
     /**
