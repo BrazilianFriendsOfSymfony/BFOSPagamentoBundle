@@ -41,7 +41,7 @@ class DadosAdicionaisPagamentoType extends ObjectType
 
         $reflection = new \ReflectionProperty($dadosAdicionais, 'data');
         $reflection->setAccessible(true);
-        $data = $reflection->getValue($dadosAdicionais);
+        $data = clone $reflection->getValue($dadosAdicionais);
         $reflection->setAccessible(false);
 
         foreach ($data as $name => $value) {
@@ -49,8 +49,11 @@ class DadosAdicionaisPagamentoType extends ObjectType
                 unset($data[$name]);
                 continue;
             }
+            if(is_callable($value[0])){
+                $data[$name][0] = call_user_func($value[0]);
+            }
             if (true === $value[1]) {
-                $data[$name][0] = self::$servicoDeCriptografia->criptografar(serialize($value[0]));
+                $data[$name][0] = self::$servicoDeCriptografia->criptografar(serialize($data[$name][0]));
             }
         }
 
