@@ -13,18 +13,18 @@ namespace BFOS\PagamentoBundle\Exception;
 
 
 use Symfony\Component\Validator\ConstraintViolationInterface;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Symfony\Component\Validator\ConstraintViolationList;
 
 class ObjetoInvalidoException extends \Exception
 {
 
     /**
-     * @param ConstraintViolationListInterface $constraints
+     * @param ConstraintViolationList $constraints
      * @param object|string                    $objeto
      * @param int                              $code
      * @param \Exception                       $previous
      */
-    public function __construct(ConstraintViolationListInterface $constraints, $objeto, $code = 0, \Exception $previous = null)
+    public function __construct(ConstraintViolationList $constraints, $objeto, $code = 0, \Exception $previous = null)
     {
         $className = '';
         if(is_string($objeto)){
