@@ -21,7 +21,7 @@ abstract class AbstractGatewayPagamento implements GatewayPagamentoInterface
     /**
      * @inheritdoc
      */
-    public function aprovar(TransacaoFinanceiraInterface $transaccao, $jahTentada)
+    public function aprovar(TransacaoFinanceiraInterface $transacao, $jahTentada)
     {
         throw new FuncaoNaoSuportadaException('Método aprovar() não é suportado pelo meio de pagamento');
     }

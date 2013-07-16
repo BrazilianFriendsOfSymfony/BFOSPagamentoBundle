@@ -45,11 +45,11 @@ interface GatewayPagamentoInterface
      * Um cenário típico seria pagamento por cartão de crédito onde a quantia
      * é primeiro autorizada.
      *
-     * @param TransacaoFinanceiraInterface $transaccao
+     * @param TransacaoFinanceiraInterface $transacao
      * @param boolean $jahTentada Se esta é uma transação que já foi tentada anteriormente.
      * @return void
      */
-    public function aprovar(TransacaoFinanceiraInterface $transaccao, $jahTentada);
+    public function aprovar(TransacaoFinanceiraInterface $transacao, $jahTentada);
 
     /**
      * Indica se o gateway suporta a ação Aprovar.
