@@ -12,6 +12,8 @@
 namespace BFOS\PagamentoBundle\Model;
 
 
+use BFOS\PagamentoBundle\Entity\DadosAdicionais;
+
 class TransacaoFinanceira implements TransacaoFinanceiraInterface
 {
     protected $id;
@@ -36,6 +38,7 @@ class TransacaoFinanceira implements TransacaoFinanceiraInterface
         $this->valorProcessado = 0.0;
         $this->valorSolicitado = 0.0;
         $this->criadoEm = new \DateTime;
+        $this->dadosAdicionais = new DadosAdicionais();
     }
 
 
