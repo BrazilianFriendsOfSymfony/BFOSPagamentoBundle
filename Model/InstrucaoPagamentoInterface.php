@@ -68,6 +68,13 @@ interface InstrucaoPagamentoInterface
     public function getReferencia();
 
     /**
+     * @param string $referencia
+     *
+     * @return InstrucaoPagamentoInterface
+     */
+    public function setReferencia($referencia);
+
+    /**
      * Retorna o identificador do meio de pagamento utilizado.
      *
      * @return string
