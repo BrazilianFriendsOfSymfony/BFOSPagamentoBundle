@@ -34,12 +34,12 @@ interface GerenteGatewayPagamentoInterface
      * Este método criará um objeto Pagamento para a InstrucaoPagamento
      * que poderá ser utilizado para realizar transações (aprovar e depositar)
      *
-     * @param integer                 $instrucaoPagamentoId
-     * @param float                   $valor
+     * @param InstrucaoPagamentoInterface|integer $instrucaoPagamento
+     * @param float                               $valor
      *
      * @return PagamentoInterface
      */
-    public function criarPagamento($instrucaoPagamentoId, $valor);
+    public function criarPagamento($instrucaoPagamento, $valor);
 
     /**
      * Este método executa uma transação de aprovação de um pagamento.
@@ -83,11 +83,13 @@ interface GerenteGatewayPagamentoInterface
      * - not persist any changes in the database
      *
      * @throws InstrucaoPagamentoInvalidaException Se a InstrucaoPagamento estiver em situação irregular
-     * @param integer $pagamentoId
+     *
+     * @param PagamentoInterface|integer $pagamento
      * @param float $valor
+     *
      * @return ResultadoInterface
      */
-    public function aprova($pagamentoId, $valor);
+    public function aprova($pagamento, $valor);
 
     /**
      * Este método executa uma transação aprovaEDeposita contra um pagamento.
@@ -141,14 +143,14 @@ interface GerenteGatewayPagamentoInterface
      * - keep PaymentInstruction's approving/depositing amounts unchanged
      * - set reason code to PluginInterface::REASON_CODE_TIMEOUT
      *
-     * @param integer $pagamentoId
+     * @param PagamentoInterface|integer $pagamento
      * @param float $valor
      *
      * @throws InstrucaoPagamentoInvalidaException
      *
      * @return ResultadoInterface
      */
-    public function aprovaEDeposita($pagamentoId, $valor);
+    public function aprovaEDeposita($pagamento, $valor);
 
     /**
      * Retorna a InstrucaoPagamento pelo id.
@@ -164,7 +166,7 @@ interface GerenteGatewayPagamentoInterface
     /**
      * Retorna o Pagamento pelo id.
      *
-     * @param $id
+     * @param int $id
      *
      * @return PagamentoInterface
      * @throws PagamentoNaoEncontradoException

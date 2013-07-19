@@ -25,8 +25,8 @@ use Doctrine\Common\Collections\Collection;
 interface InstrucaoPagamentoInterface
 {
     const SITUACAO_NOVA = 1;
-    const SITUACAO_RECEBIDA = 2;
-    const SITUACAO_VALIDA = 3;
+    const SITUACAO_VALIDA = 2;
+    const SITUACAO_FECHADA = 3;
     const SITUACAO_INVALIDA = 4;
 
     /**

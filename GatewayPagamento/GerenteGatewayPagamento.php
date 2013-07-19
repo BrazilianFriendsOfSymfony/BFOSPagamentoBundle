@@ -76,22 +76,25 @@ class GerenteGatewayPagamento implements GerenteGatewayPagamentoInterface
     /**
      * @inheritdoc
      */
-    public function criarPagamento($instrucaoPagamentoId, $valor = null)
+    public function criarPagamento($instrucaoPagamento, $valor = null)
     {
-        $instrPagto = $this->getInstrucaoPagamento($instrucaoPagamentoId, false);
+        /** @var InstrucaoPagamentoInterface $instrucaoPagamento */
+        if(is_numeric($instrucaoPagamento)){
+            $instrucaoPagamento = $this->getInstrucaoPagamento((int) $instrucaoPagamento, false);
+        }
 
-        if (InstrucaoPagamentoInterface::SITUACAO_VALIDA !== $instrPagto->getSituacao()) {
+        if (InstrucaoPagamentoInterface::SITUACAO_VALIDA !== $instrucaoPagamento->getSituacao()) {
             throw new InstrucaoPagamentoInvalidaException('A instrução de pagamento deve estar em situação SITUACAO_VALIDA.');
         }
 
         if (is_null($valor)) {
-            $valor = $instrPagto->getValorTotal() - $instrPagto->getValorDepositado();
+            $valor = $instrucaoPagamento->getValorTotal() - $instrucaoPagamento->getValorDepositado();
         }
 
         $class = $this->options['pagamento_class'];
         /** @var PagamentoInterface $pagamento */
         $pagamento = new $class();
-        $pagamento->setInstrucaoPagamento($instrPagto);
+        $pagamento->setInstrucaoPagamento($instrucaoPagamento);
         $pagamento->setValorEsperado($valor);
 
         $this->entityManager->persist($pagamento);
@@ -102,10 +105,12 @@ class GerenteGatewayPagamento implements GerenteGatewayPagamentoInterface
     /**
      * @inheritdoc
      */
-    public function aprova($pagamentoId, $valor)
+    public function aprova($pagamento, $valor)
     {
-        $pagamento = $this->getPagamento($pagamentoId);
-        
+        if(is_numeric($pagamento)){
+            $pagamento = $this->getPagamento($pagamento);
+        }
+
         $instrucao = $pagamento->getInstrucaoPagamento();
 
         if (InstrucaoPagamentoInterface::SITUACAO_VALIDA !== $instrucao->getSituacao()) {
@@ -222,9 +227,11 @@ class GerenteGatewayPagamento implements GerenteGatewayPagamentoInterface
     /**
      * @inheritdoc
      */
-    public function aprovaEDeposita($pagamentoId, $valor)
+    public function aprovaEDeposita($pagamento, $valor)
     {
-        $pagamento = $this->getPagamento($pagamentoId);
+        if(is_numeric($pagamento)){
+            $pagamento = $this->getPagamento($pagamento);
+        }
 
         /** @var InstrucaoPagamentoInterface $instrucao */
         $instrucao = $pagamento->getInstrucaoPagamento();
