@@ -20,7 +20,7 @@ interface DadosAdicionaisInterface
 {
     function ehNecessariaCriptografia($nome);
     function remover($nome);
-    function adicionar($nome, $valor, $criptografar = true);
+    function adicionar($nome, $valor, $criptografar = true, $persistir = true);
 
     /**
      * @param      $nome

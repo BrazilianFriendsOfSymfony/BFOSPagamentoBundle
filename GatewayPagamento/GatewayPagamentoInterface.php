@@ -12,6 +12,7 @@
 namespace BFOS\PagamentoBundle\GatewayPagamento;
 
 use BFOS\PagamentoBundle\GatewayPagamento\Exception\InstrucaoPagamentoInvalidaException;
+use BFOS\PagamentoBundle\GatewayPagamento\Exception\RedirecionarUsuarioAcaoRequeridaException;
 use BFOS\PagamentoBundle\Model\InstrucaoPagamentoInterface;
 use BFOS\PagamentoBundle\Model\TransacaoFinanceiraInterface;
 
@@ -47,7 +48,10 @@ interface GatewayPagamentoInterface
      *
      * @param TransacaoFinanceiraInterface $transacao
      * @param boolean $jahTentada Se esta é uma transação que já foi tentada anteriormente.
+     *
      * @return void
+     *
+     * @throws RedirecionarUsuarioAcaoRequeridaException
      */
     public function aprovar(TransacaoFinanceiraInterface $transacao, $jahTentada);
 

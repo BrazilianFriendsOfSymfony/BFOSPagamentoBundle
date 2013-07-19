@@ -47,13 +47,13 @@ class DadosAdicionais implements DadosAdicionaisInterface
         return $this->data[$name][2];
     }
 
-    public function adicionar($name, $value, $encrypt = true, $persist = true)
+    public function adicionar($name, $value, $criptografar = true, $persistir = true)
     {
-        if ($encrypt && !$persist) {
+        if ($criptografar && !$persistir) {
             throw new \InvalidArgumentException(sprintf('Non persisted field cannot be encrypted "%s".', $name));
         }
 
-        $this->data[$name] = array($value, $encrypt, $persist);
+        $this->data[$name] = array($value, $criptografar, $persistir);
     }
 
     public function obter($name, $padrao = null)

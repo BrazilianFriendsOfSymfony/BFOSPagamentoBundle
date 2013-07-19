@@ -114,20 +114,20 @@ class GerenteGatewayPagamento implements GerenteGatewayPagamentoInterface
         $instrucao = $pagamento->getInstrucaoPagamento();
 
         if (InstrucaoPagamentoInterface::SITUACAO_VALIDA !== $instrucao->getSituacao()) {
-            throw new InstrucaoPagamentoInvalidaException('The PaymentInstruction\'s state must be STATE_VALID.');
+            throw new InstrucaoPagamentoInvalidaException('O InstrucaoPagamento tem que ter SITUACAO_VALIDA.');
         }
 
         $pagamentoState = $pagamento->getSituacao();
         if (PagamentoInterface::SITUACAO_NOVO === $pagamentoState) {
             if (Number::compare($pagamento->getValorEsperado(), $valor) < 0) {
-                throw new \Exception('The Payment\'s target amount is less than the requested amount.');
+                throw new \Exception('O valor esperado do Pagamento é menor que o valor solicitado.');
             }
 
             if ($instrucao->temTransacaoPendente()) {
-                throw new InstrucaoPagamentoInvalidaException('The PaymentInstruction can only ever have one pending transaction.');
+                throw new InstrucaoPagamentoInvalidaException('A InstrucaoPagamento, em qualquer momento, pode ter somente uma TransacaoFinanceira pendente.');
             }
 
-            $retry = false;
+            $jahTentada = false;
 
             $transacao = $this->criarTransacaoFinanceira();
             $transacao->setPagamento($pagamento);
@@ -142,20 +142,20 @@ class GerenteGatewayPagamento implements GerenteGatewayPagamentoInterface
             $this->dispararEventoMudancaSituacaoPagamento($pagamento, PagamentoInterface::SITUACAO_NOVO);
         } else if (PagamentoInterface::SITUACAO_APROVANDO === $pagamentoState) {
             if (Number::compare($pagamento->getValorEsperado(), $valor) !== 0) {
-                throw new \Exception('The Payment\'s target amount must equal the requested amount in a retry transaction.');
+                throw new \Exception('O valor esperado do Pagamento tem que ser igual ao valor solicitado em uma transação jahTentada.');
             }
 
             $transacao = $pagamento->getTransacaoDeAprovacao();
-            $retry = true;
+            $jahTentada = true;
         } else {
-            throw new PagamentoInvalidoException('The Payment\'s state must be STATE_NEW, or STATE_APPROVING.');
+            throw new PagamentoInvalidoException('A situacao do Pagamento deve ser SITUACAO_NOVO ou SITUACAO_APROVANDO.');
         }
 
         $gateway = $this->registro->get($instrucao->getGatewayPagamento());
-        $oldState = $pagamento->getSituacao();
+        $situacaoAnterior = $pagamento->getSituacao();
 
         try {
-            $gateway->aprovar($transacao, $retry);
+            $gateway->aprovar($transacao, $jahTentada);
 
             if (GatewayPagamentoInterface::RESPOSTA_CODIGO_SUCESSO === $transacao->getCodigoResposta()) {
                 $pagamento->setSituacao(PagamentoInterface::SITUACAO_APROVADO);
@@ -165,7 +165,7 @@ class GerenteGatewayPagamento implements GerenteGatewayPagamentoInterface
                 $instrucao->setValorAprovado($instrucao->getValorAprovado() + $transacao->getValorProcessado());
                 $transacao->setSituacao(TransacaoFinanceiraInterface::SITUACAO_CONCLUIDA_COM_SUCCESSO);
 
-                $this->dispararEventoMudancaSituacaoPagamento($pagamento, $oldState);
+                $this->dispararEventoMudancaSituacaoPagamento($pagamento, $situacaoAnterior);
 
                 $this->entityManager->persist($pagamento);
                 $this->entityManager->persist($instrucao);
@@ -178,7 +178,7 @@ class GerenteGatewayPagamento implements GerenteGatewayPagamentoInterface
                 $instrucao->setValorAprovando($instrucao->getValorAprovando() - $valor);
                 $transacao->setSituacao(TransacaoFinanceiraInterface::SITUACAO_FALHOU);
 
-                $this->dispararEventoMudancaSituacaoPagamento($pagamento, $oldState);
+                $this->dispararEventoMudancaSituacaoPagamento($pagamento, $situacaoAnterior);
 
                 $this->entityManager->persist($pagamento);
                 $this->entityManager->persist($instrucao);
@@ -192,7 +192,7 @@ class GerenteGatewayPagamento implements GerenteGatewayPagamentoInterface
             $instrucao->setValorAprovando($instrucao->getValorAprovando() - $valor);
             $transacao->setSituacao(TransacaoFinanceiraInterface::SITUACAO_FALHOU);
 
-            $this->dispararEventoMudancaSituacaoPagamento($pagamento, $oldState);
+            $this->dispararEventoMudancaSituacaoPagamento($pagamento, $situacaoAnterior);
 
 
 
