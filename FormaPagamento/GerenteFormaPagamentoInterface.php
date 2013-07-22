@@ -38,4 +38,13 @@ interface GerenteFormaPagamentoInterface
      * @return FormaPagamentoInterface
      */
     public function getFormaPagamentoById($id);
+
+    /**
+     * @param string  $gatewayPagamento Identificador do gateway de pagamento
+     * @param boolean $somenteAtivas
+     * @param boolean $somentePrimeiro
+     *
+     * @return FormaPagamentoInterface
+     */
+    public function getByGatewayPagamento($gatewayPagamento, $somenteAtivas = true, $somentePrimeiro = true);
 }

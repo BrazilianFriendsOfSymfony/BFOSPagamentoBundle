@@ -68,9 +68,7 @@ class GerenteFormaPagamento implements GerenteFormaPagamentoInterface
 
 
     /**
-     * @param int $id
-     *
-     * @return FormaPagamentoInterface
+     * @inheritdoc
      */
     public function getFormaPagamentoById($id)
     {
@@ -81,6 +79,30 @@ class GerenteFormaPagamento implements GerenteFormaPagamentoInterface
         } catch (NoResultException $e) {
             return null;
         }
+    }
+
+    /**
+     * @inheritdoc
+     */
+        public function getByGatewayPagamento($gatewayPagamento, $somenteAtivas = true, $somentePrimeiro = true)
+    {
+        $resultado = array();
+        $formas = null;
+        if ($somenteAtivas) {
+            $formas = $this->getAtivas();
+        } else {
+            $formas = $this->getTodas();
+        }
+        /** @var FormaPagamentoInterface $forma */
+        foreach ($formas as $forma) {
+            if ($forma->getGatewayPagamento() == $gatewayPagamento) {
+                if ($somentePrimeiro) {
+                    return $forma;
+                }
+                $resultado[] = $forma;
+            }
+        }
+        return $resultado;
     }
 
 
