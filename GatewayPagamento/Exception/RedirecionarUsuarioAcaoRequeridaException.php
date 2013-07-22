@@ -14,7 +14,7 @@ namespace BFOS\PagamentoBundle\GatewayPagamento\Exception;
 
 use Exception;
 
-class RedirecionarUsuarioAcaoRequeridaException extends GatewayPagamentoAcaoRequeridaException
+class RedirecionarUsuarioAcaoRequeridaException extends AcaoRequeridaException
 {
     protected $url;
 

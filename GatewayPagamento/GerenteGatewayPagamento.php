@@ -16,7 +16,7 @@ use BFOS\PagamentoBundle\Event\PagamentoEvents;
 use BFOS\PagamentoBundle\Exception\PagamentoInvalidoException;
 use BFOS\PagamentoBundle\Exception\PagamentoNaoEncontradoException;
 use BFOS\PagamentoBundle\GatewayPagamento\Event\MudancaSituacaoPagamentoEvent;
-use BFOS\PagamentoBundle\GatewayPagamento\Exception\GatewayPagamentoAcaoRequeridaException;
+use BFOS\PagamentoBundle\GatewayPagamento\Exception\AcaoRequeridaException;
 use BFOS\PagamentoBundle\GatewayPagamento\Exception\GatewayPagamentoBloqueadoException;
 use BFOS\PagamentoBundle\GatewayPagamento\Exception\GatewayPagamentoException;
 use BFOS\PagamentoBundle\GatewayPagamento\Exception\GatewayPagamentoTimeoutException;
@@ -119,6 +119,7 @@ class GerenteGatewayPagamento implements GerenteGatewayPagamentoInterface
 
         $pagamentoState = $pagamento->getSituacao();
         if (PagamentoInterface::SITUACAO_NOVO === $pagamentoState) {
+
             if (Number::compare($pagamento->getValorEsperado(), $valor) < 0) {
                 throw new \Exception('O valor esperado do Pagamento é menor que o valor solicitado.');
             }
@@ -140,7 +141,9 @@ class GerenteGatewayPagamento implements GerenteGatewayPagamentoInterface
             $instrucao->setValorAprovando($instrucao->getValorAprovando() + $valor);
 
             $this->dispararEventoMudancaSituacaoPagamento($pagamento, PagamentoInterface::SITUACAO_NOVO);
+
         } else if (PagamentoInterface::SITUACAO_APROVANDO === $pagamentoState) {
+
             if (Number::compare($pagamento->getValorEsperado(), $valor) !== 0) {
                 throw new \Exception('O valor esperado do Pagamento tem que ser igual ao valor solicitado em uma transação jahTentada.');
             }
@@ -186,23 +189,12 @@ class GerenteGatewayPagamento implements GerenteGatewayPagamentoInterface
 
                 $result = $this->construirResultadoTransacaoFinanceira($transacao, ResultadoInterface::SITUACAO_FALHOU, $transacao->getJustificativaSituacao());
             }
-        } catch (GatewayPagamentoException $ex) {
-            $pagamento->setSituacao(PagamentoInterface::SITUACAO_FALHOU);
-            $pagamento->setValorAprovando(0.0);
-            $instrucao->setValorAprovando($instrucao->getValorAprovando() - $valor);
-            $transacao->setSituacao(TransacaoFinanceiraInterface::SITUACAO_FALHOU);
-
-            $this->dispararEventoMudancaSituacaoPagamento($pagamento, $situacaoAnterior);
-
-
-
-            $result = $this->construirResultadoTransacaoFinanceira($transacao, ResultadoInterface::SITUACAO_FALHOU, $transacao->getJustificativaSituacao());
         } catch (GatewayPagamentoBloqueadoException $blocked) {
             $transacao->setSituacao(TransacaoFinanceiraInterface::SITUACAO_PENDENTE);
 
             if ($blocked instanceof GatewayPagamentoTimeoutException) {
                 $justificativa = GatewayPagamentoInterface::JUSTIFICATIVA_TIMEOUT;
-            } else if ($blocked instanceof GatewayPagamentoAcaoRequeridaException) {
+            } else if ($blocked instanceof AcaoRequeridaException) {
                 $justificativa = GatewayPagamentoInterface::JUSTIFICATIVA_ACAO_REQUERIDA;
             } else if (null === $justificativa = $transacao->getJustificativaSituacao()) {
                 $justificativa = GatewayPagamentoInterface::JUSTIFICATIVA_BLOQUEADO;
@@ -215,6 +207,15 @@ class GerenteGatewayPagamento implements GerenteGatewayPagamentoInterface
             $result->setRecuperavel(true);
 
 
+        } catch (GatewayPagamentoException $ex) {
+            $pagamento->setSituacao(PagamentoInterface::SITUACAO_FALHOU);
+            $pagamento->setValorAprovando(0.0);
+            $instrucao->setValorAprovando($instrucao->getValorAprovando() - $valor);
+            $transacao->setSituacao(TransacaoFinanceiraInterface::SITUACAO_FALHOU);
+
+            $this->dispararEventoMudancaSituacaoPagamento($pagamento, $situacaoAnterior);
+
+            $result = $this->construirResultadoTransacaoFinanceira($transacao, ResultadoInterface::SITUACAO_FALHOU, $transacao->getJustificativaSituacao());
         }
 
         $this->entityManager->persist($pagamento);
@@ -342,7 +343,7 @@ class GerenteGatewayPagamento implements GerenteGatewayPagamentoInterface
 
             if ($blocked instanceof GatewayPagamentoTimeoutException) {
                 $justificativaSituacao = GatewayPagamentoInterface::JUSTIFICATIVA_TIMEOUT;
-            } else if ($blocked instanceof GatewayPagamentoAcaoRequeridaException) {
+            } else if ($blocked instanceof AcaoRequeridaException) {
                 $justificativaSituacao = GatewayPagamentoInterface::JUSTIFICATIVA_ACAO_REQUERIDA;
             } else if (null === $justificativaSituacao = $transacao->getJustificativaSituacao()) {
                 $justificativaSituacao = GatewayPagamentoInterface::JUSTIFICATIVA_BLOQUEADO;
