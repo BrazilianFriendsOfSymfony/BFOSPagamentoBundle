@@ -32,7 +32,7 @@ class FormaPagamentoType extends AbstractType
             new ConstrutorFormFormaPagamentoListener($this->registro, $builder->getFormFactory())
         );
         $builder
-            ->add('ativo')
+            ->add('ativo', null, array('required' => false))
             ->add(
                     'gatewayPagamento',
                     'bfos_pagamento_gateway_pagamento_choice',
