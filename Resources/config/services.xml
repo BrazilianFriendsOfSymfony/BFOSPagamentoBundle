@@ -26,6 +26,8 @@
         <parameter key="bfos_pagamento.pagamento.class">BFOS\PagamentoBundle\Entity\Pagamento</parameter>
         <parameter key="bfos_pagamento.transacao_financeira.class">BFOS\PagamentoBundle\Entity\TransacaoFinanceira</parameter>
         <parameter key="bfos_pagamento.forma_pagamento.class">BFOS\PagamentoBundle\Entity\FormaPagamento</parameter>
+
+        <parameter key="bfos_pagamento.logar_interacao">%kernel.debug%</parameter>
     </parameters>
 
     <services>
@@ -56,6 +58,8 @@
             </argument>
             <argument type="service" id="bfos_pagamento.registro_gateway_pagamento" />
             <argument type="service" id="event_dispatcher" />
+            <argument type="service" id="logger" />
+            <argument>%bfos_pagamento.logar_interacao%</argument>
         </service>
 
         <!--Serviço de Criptografia-->
