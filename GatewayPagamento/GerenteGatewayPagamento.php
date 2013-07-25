@@ -259,6 +259,9 @@ class GerenteGatewayPagamento implements GerenteGatewayPagamentoInterface
             $result = $this->construirResultadoTransacaoFinanceira($transacao, ResultadoInterface::SITUACAO_FALHOU, $transacao->getJustificativaSituacao());
         }
 
+        if ($this->logarInteracao) {
+            $this->logger->info(' --- vai persistir $pagamento , $instrucao e $transacao');
+        }
         $this->entityManager->persist($pagamento);
         $this->entityManager->persist($instrucao);
         $this->entityManager->persist($transacao);
