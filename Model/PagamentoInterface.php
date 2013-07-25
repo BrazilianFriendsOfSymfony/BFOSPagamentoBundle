@@ -100,6 +100,9 @@ interface PagamentoInterface
      */
     public function setInstrucaoPagamento(InstrucaoPagamentoInterface $instrucaoPagamento);
 
+    /**
+     * @return TransacaoFinanceiraInterface
+     */
     public function getTransacaoPendente();
 
     public function getSituacao();
