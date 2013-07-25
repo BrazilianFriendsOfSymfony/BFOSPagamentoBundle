@@ -232,10 +232,19 @@ class GerenteGatewayPagamento implements GerenteGatewayPagamentoInterface
             $transacao->setJustificativaSituacao($justificativa);
             $transacao->setCodigoResposta(GatewayPagamentoInterface::RESPOSTA_CODIGO_PENDENTE);
 
+            if ($this->logarInteracao) {
+                $this->logger->info(' --- vai chamar construirResultadoTransacaoFinanceira()');
+            }
             $result = $this->construirResultadoTransacaoFinanceira($transacao, ResultadoInterface::SITUACAO_PENDENTE, $justificativa);
+            if ($this->logarInteracao) {
+                $this->logger->info(' --- voltou de construirResultadoTransacaoFinanceira()');
+            }
             $result->setException($blocked);
             $result->setRecuperavel(true);
 
+            if ($this->logarInteracao) {
+                $this->logger->info(' --- FIM - catched GatewayPagamentoBloqueadoException');
+            }
         } catch (GatewayPagamentoException $ex) {
             if ($this->logarInteracao) {
                 $this->logger->info(' --- catched GatewayPagamentoException');
