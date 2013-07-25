@@ -12,7 +12,7 @@
 namespace BFOS\PagamentoBundle\GatewayPagamento\Exception;
 
 
-class GatewayPagamentoBloqueadoException extends \Exception
+class GatewayPagamentoBloqueadoException extends GatewayPagamentoException
 {
 
 }
