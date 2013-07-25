@@ -106,7 +106,9 @@ class GerenteGatewayPagamento implements GerenteGatewayPagamentoInterface
         $pagamento->setInstrucaoPagamento($instrucaoPagamento);
         $pagamento->setValorEsperado($valor);
 
+        $instrucaoPagamento->adicionarPagamento($pagamento);
         $this->entityManager->persist($pagamento);
+        $this->entityManager->persist($instrucaoPagamento);
 
         return $pagamento;
     }

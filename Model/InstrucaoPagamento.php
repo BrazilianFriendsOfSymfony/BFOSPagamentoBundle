@@ -123,6 +123,18 @@ class InstrucaoPagamento implements InstrucaoPagamentoInterface
     /**
      * @inheritdoc
      */
+    public function adicionarPagamento(PagamentoInterface $pagamento)
+    {
+        if (!$this->pagamentos->contains($pagamento)) {
+            $this->pagamentos->add($pagamento);
+        }
+        $pagamento->setInstrucaoPagamento($this);
+    }
+
+
+    /**
+     * @inheritdoc
+     */
     public function getTransacaoPendente()
     {
         /** @var PagamentoInterface $pagamento */

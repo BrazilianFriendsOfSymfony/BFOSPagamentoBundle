@@ -86,7 +86,7 @@ interface InstrucaoPagamentoInterface
      *
      * @param string $gatewayPagamento
      *
-     * @return TransacaoFinanceiraInterface
+     * @return InstrucaoPagamentoInterface
      */
     public function setGatewayPagamento($gatewayPagamento);
 
@@ -102,7 +102,7 @@ interface InstrucaoPagamentoInterface
      *
      * @param float $valorTotal
      *
-     * @return TransacaoFinanceiraInterface
+     * @return InstrucaoPagamentoInterface
      */
     public function setValorTotal($valorTotal);
 
@@ -112,6 +112,13 @@ interface InstrucaoPagamentoInterface
      * @return Collection
      */
     public function getPagamentos();
+
+    /**
+     * @param PagamentoInterface $pagamento
+     *
+     * @return InstrucaoPagamentoInterface
+     */
+    public function adicionarPagamento(PagamentoInterface $pagamento);
 
     /**
      * Retorna a transação pendente.
