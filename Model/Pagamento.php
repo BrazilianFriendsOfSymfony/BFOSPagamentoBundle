@@ -12,6 +12,7 @@
 namespace BFOS\PagamentoBundle\Model;
 
 
+use BFOS\PagamentoBundle\Entity\DadosAdicionais;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class Pagamento implements PagamentoInterface
@@ -30,6 +31,8 @@ class Pagamento implements PagamentoInterface
     protected $transacoes;
     protected $criadoEm;
     protected $atualizadoEm;
+    /** @var  DadosAdicionaisInterface $dadosAdicionais */
+    protected $dadosAdicionais;
 
     public function __construct()
     {
@@ -43,6 +46,7 @@ class Pagamento implements PagamentoInterface
         $this->precisaDeAtencao = false;
         $this->vencido = false;
         $this->criadoEm = new \DateTime;
+        $this->dadosAdicionais = new DadosAdicionais();
     }
 
 
@@ -347,4 +351,22 @@ class Pagamento implements PagamentoInterface
     {
         return $this->criadoEm;
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function getDadosAdicionais()
+    {
+        return $this->dadosAdicionais;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setDadosAdicionais($dados)
+    {
+        $this->dadosAdicionais = $dados;
+        return $this;
+    }
+
 }

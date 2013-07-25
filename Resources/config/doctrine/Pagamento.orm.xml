@@ -22,6 +22,7 @@
         <field name="valorEsperado" column="valor_esperado" type="decimal" scale="5" />
         <field name="precisaDeAtencao" column="precisa_de_atencao" type="boolean" />
         <field name="vencido" type="boolean" />
+        <field name="dadosAdicionais" column="dados_adicionais" type="dados_adicionais_pagamento_type" />
 
         <many-to-one field="instrucaoPagamento" target-entity="BFOS\PagamentoBundle\Model\InstrucaoPagamentoInterface" inversed-by="pagamentos">
             <join-column name="instrucao_pagamento_id"

@@ -196,4 +196,21 @@ interface PagamentoInterface
      * @return \DateTime
      */
     public function getCriadoEm();
+
+    /**
+     * Retorna os dados adicionais, geralmente ligado a um método de pagamento específico.
+     *
+     * @return DadosAdicionaisInterface
+     */
+    public function getDadosAdicionais();
+
+    /**
+     * Define os dados adicionais, geralmente ligado a um método de pagamento específico.
+     *
+     * @param DadosAdicionaisInterface $dados
+     *
+     * @return InstrucaoPagamentoInterface
+     */
+    public function setDadosAdicionais($dados);
+
 }
