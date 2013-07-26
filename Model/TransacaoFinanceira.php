@@ -141,7 +141,7 @@ class TransacaoFinanceira implements TransacaoFinanceiraInterface
      */
     public function getValorSolicitado()
     {
-        $this->valorSolicitado;
+        return $this->valorSolicitado;
     }
 
     /**

@@ -128,6 +128,7 @@ class Pagamento implements PagamentoInterface
     public function setValorAprovando($valor)
     {
         $this->valorAprovando = $valor;
+        return $this;
     }
 
     /**
@@ -317,10 +318,11 @@ class Pagamento implements PagamentoInterface
     public function adicionarTransacao(TransacaoFinanceiraInterface $transacao)
     {
         if($this->jahAdicionouTransacao($transacao)){
-            return;
+            return $this;
         }
         $this->transacoes[] = $transacao;
         $transacao->setPagamento($this);
+        return $this;
     }
 
     /**

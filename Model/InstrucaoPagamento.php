@@ -136,6 +136,7 @@ class InstrucaoPagamento implements InstrucaoPagamentoInterface
             $this->pagamentos->add($pagamento);
         }
         $pagamento->setInstrucaoPagamento($this);
+        return $this;
     }
 
 
