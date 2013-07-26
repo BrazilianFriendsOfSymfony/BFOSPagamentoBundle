@@ -1,0 +1,68 @@
+<div class="instrucao-pagamento">
+    Gateway: {{ instrucaoPagamento.gatewayPagamento }} [{{ instrucaoPagamento.id }}]
+    <br/>
+    Situação: {{ instrucaoPagamento.situacaoLabel }} [{{ instrucaoPagamento.situacao }}]
+    <br/>
+    Referência: {{ instrucaoPagamento.referencia }}
+    <br/>
+    Valor total: R$ {{ instrucaoPagamento.valorTotal|number_format(2,',', '.') }}
+    <br/>
+    {% if instrucaoPagamento.pagamentos|length > 0 %}
+        <div class="titulo-pagamentos">Pagamento(s):</div>
+        <ul class="pagamentos">
+            {% for pagamento in instrucaoPagamento.pagamentos %}
+                <li class="pagamento">
+                    <div class="info">
+                        Situação: {{ pagamento.situacaoLabel }}
+                        <br/>
+                        Valor esperado: R$ {{ pagamento.valorEsperado|number_format(2,',', '.') }}
+                        <br/>
+                        Valor aprovado: R$ {{ pagamento.valorAprovado|number_format(2,',', '.') }}
+                        {% if pagamento.valorAprovando > 0 %} - em aprovação: R$ {{ pagamento.valorAprovando|number_format(2,',', '.') }}{% endif %}
+                        <br/>
+                        {% if pagamento.valorDepositado > 0 %}
+                            Valor transferido: {{ pagamento.valorDepositado|number_format(2,',', '.') }}
+                            {% if pagamento.valorDepositando > 0 %} - em aprovação: R$ {{ pagamento.valorDepositando|number_format(2,',', '.') }}{% endif %}
+                            <br/>
+                        {% else %}
+                            {% if pagamento.valorDepositando > 0 %}
+                                Transferência em aprovação: R$ {{ pagamento.valorDepositando|number_format(2,',', '.') }}
+                                <br/>
+                            {% endif %}
+                        {% endif %}
+                        Vencimento: {{ pagamento.dataVencimento|date('d/m/Y H:i:s') }} ({% if pagamento.vencido %}<strong>Vencido!</strong>{% else %}Válido{% endif %})
+                    </div>
+                    {% if pagamento.transacaoDeAprovacao is not empty %}
+                    <ul>
+                        <li class="transacao transacao-aprovacao">
+                            {% set transacao = pagamento.transacaoDeAprovacao %}
+                            <div class="info">
+                                <div class="titulo titulo-transacao">Transação de aprovação | {{ transacao.id }}</div>
+                                Situação: {{ transacao.situacaoLabel }}
+                                <br/>
+                                Tipo: {{ transacao.tipoTransacaoLabel }}
+                                <br/>
+                                Valor solicitado: R$ {{ transacao.valorSolicitado|number_format(2,',', '.') }}
+                                <br/>
+                                {% if transacao.valorProcessado > 0 %}
+                                    Valor processado: R$ {{ transacao.valorProcessado|number_format(2,',', '.') }}
+                                    <br/>
+                                {% endif %}
+                                {% if transacao.idRastreamento is not empty %}
+                                    ID rastreamento: {{ transacao.idRastreamento }}
+                                    <br/>
+                                {% endif %}
+                                Última atualização: {{ transacao.atualizadoEm|date('d/m/Y H:i:s') }}
+                            </div>
+                        </li>
+                    </ul>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <div class="sem-pagamentos">
+            Não há pagamentos registrados.
+        </div>
+    {% endif %}
+</div>
