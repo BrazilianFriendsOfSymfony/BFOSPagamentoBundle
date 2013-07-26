@@ -44,6 +44,13 @@ interface TransacaoFinanceiraInterface
     public function getSituacao();
 
     /**
+     * Retorna o label da situação atual da transação.
+     *
+     * @return string
+     */
+    public function getSituacaoLabel();
+
+    /**
      * Define a situação atual da transação.
      *
      * @param int $situacao
@@ -74,6 +81,13 @@ interface TransacaoFinanceiraInterface
      * @return int
      */
     public function getTipoTransacao();
+
+    /**
+     * Retorna o label do tipo de transacao financeira.
+     *
+     * @return string
+     */
+    public function getTipoTransacaoLabel();
 
     /**
      * Define o tipo de transacao financeira.

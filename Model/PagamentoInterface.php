@@ -105,7 +105,19 @@ interface PagamentoInterface
      */
     public function getTransacaoPendente();
 
+    /**
+     * Retorna a situação do pagamento.
+     *
+     * @return int
+     */
     public function getSituacao();
+
+    /**
+     * Retorna o label da situação do pagamento.
+     *
+     * @return string
+     */
+    public function getSituacaoLabel();
 
     /**
      * Retorna o valor esperado por esse pagamento.

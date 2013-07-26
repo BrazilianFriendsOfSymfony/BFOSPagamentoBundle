@@ -34,6 +34,17 @@ class Pagamento implements PagamentoInterface
     /** @var  DadosAdicionaisInterface $dadosAdicionais */
     protected $dadosAdicionais;
 
+    static public $labelsSituacao = array(
+        self::SITUACAO_APROVADO => 'Aprovado',
+        self::SITUACAO_APROVANDO => 'Aprovando',
+        self::SITUACAO_CANCELADO => 'Cancelado',
+        self::SITUACAO_DEPOSITADO => 'Depositado',
+        self::SITUACAO_DEPOSITANDO => 'Depositando',
+        self::SITUACAO_EXPIRADO => 'Expirado',
+        self::SITUACAO_FALHOU => 'Falhou',
+        self::SITUACAO_NOVO => 'Novo'
+    );
+
     public function __construct()
     {
         $this->situacao = self::SITUACAO_NOVO;
@@ -208,6 +219,18 @@ class Pagamento implements PagamentoInterface
     public function getSituacao()
     {
         return $this->situacao;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getSituacaoLabel()
+    {
+        $label = '';
+        if (isset(self::$labelsSituacao[$this->situacao])) {
+            $label = self::$labelsSituacao[$this->situacao];
+        }
+        return $label;
     }
 
     /**

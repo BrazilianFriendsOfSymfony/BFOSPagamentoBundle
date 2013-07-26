@@ -32,6 +32,25 @@ class TransacaoFinanceira implements TransacaoFinanceiraInterface
     protected $criadoEm;
     protected $atualizadoEm;
 
+    public static $labelsSituacao = array(
+        self::SITUACAO_CANCELADA => 'Cancelada',
+        self::SITUACAO_FALHOU => 'Falhou',
+        self::SITUACAO_NOVA => 'Nova',
+        self::SITUACAO_PENDENTE => 'Pendente',
+        self::SITUACAO_CONCLUIDA_COM_SUCCESSO => 'Concluída com sucesso',
+    );
+
+    public static $labelsTipoTransacao = array(
+        self::TIPO_TRANSACAO_APROVACAO => 'Aprovação',
+        self::TIPO_TRANSACAO_APROVACAO_E_DEPOSITO => 'Aprovação e depósito',
+        self::TIPO_TRANSACAO_CONSULTA => 'Consulta',
+        self::TIPO_TRANSACAO_CREDITO => 'Crédito',
+        self::TIPO_TRANSACAO_DEPOSITO => 'Depósito',
+        self::TIPO_TRANSACAO_ESTORNO_APROVACAO => 'Estorno da aprovação',
+        self::TIPO_TRANSACAO_ESTORNO_CREDITO => 'Estorno do crédito',
+        self::TIPO_TRANSACAO_ESTORNO_DEPOSITO => 'Estorno do depósito'
+    );
+
     public function __construct()
     {
         $this->situacao = self::SITUACAO_NOVA;
@@ -62,6 +81,18 @@ class TransacaoFinanceira implements TransacaoFinanceiraInterface
     /**
      * @inheritdoc
      */
+    public function getSituacaoLabel()
+    {
+        $label = '';
+        if (isset(self::$labelsSituacao[$this->situacao])) {
+            $label = self::$labelsSituacao[$this->situacao];
+        }
+        return $label;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function setPagamento(PagamentoInterface $pagamento)
     {
         $this->pagamento = $pagamento;
@@ -82,6 +113,18 @@ class TransacaoFinanceira implements TransacaoFinanceiraInterface
     public function getTipoTransacao()
     {
         return $this->tipoTransacao;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getTipoTransacaoLabel()
+    {
+        $label = '';
+        if (isset(self::$labelsTipoTransacao[$this->tipoTransacao])) {
+            $label = self::$labelsTipoTransacao[$this->tipoTransacao];
+        }
+        return $label;
     }
 
     /**
