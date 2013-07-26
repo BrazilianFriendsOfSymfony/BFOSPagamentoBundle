@@ -51,6 +51,13 @@ interface InstrucaoPagamentoInterface
     public function getSituacao();
 
     /**
+     * Retorna a descrição da situação da instrução de pagamento.
+     *
+     * @return string
+     */
+    public function getSituacaoLabel();
+
+    /**
      * Define a situação da instrução de pagamento.
      *
      * @param int $situacao

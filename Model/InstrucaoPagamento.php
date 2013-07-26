@@ -34,6 +34,13 @@ class InstrucaoPagamento implements InstrucaoPagamentoInterface
     protected $criadoEm;
     protected $atualizadoEm;
 
+    static public $labelsSituacao = array(
+        self::SITUACAO_NOVA => 'Nova',
+        self::SITUACAO_INVALIDA => 'Inválida',
+        self::SITUACAO_FECHADA => 'Concluída',
+        self::SITUACAO_VALIDA => 'Válida',
+    );
+
     public function __construct()
     {
         $this->situacao = InstrucaoPagamentoInterface::SITUACAO_NOVA;
@@ -179,6 +186,18 @@ class InstrucaoPagamento implements InstrucaoPagamentoInterface
     public function getSituacao()
     {
         return $this->situacao;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getSituacaoLabel()
+    {
+        $label = '';
+        if (isset(self::$labelsSituacao[$this->situacao])) {
+            $label = self::$labelsSituacao[$this->situacao];
+        }
+        return $label;
     }
 
     /**
