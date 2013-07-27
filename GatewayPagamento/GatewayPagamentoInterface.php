@@ -52,6 +52,7 @@ interface GatewayPagamentoInterface
      * @return void
      *
      * @throws RedirecionarUsuarioAcaoRequeridaException
+     * @throws InstrucaoPagamentoInvalidaException
      */
     public function aprovar(TransacaoFinanceiraInterface $transacao, $jahTentada);
 
@@ -73,7 +74,11 @@ interface GatewayPagamentoInterface
      *
      * @param TransacaoFinanceiraInterface $transacao
      * @param boolean $jahTentada
+     *
      * @return void
+     *
+     * @throws RedirecionarUsuarioAcaoRequeridaException
+     * @throws InstrucaoPagamentoInvalidaException
      */
     public function aprovarEDepositar(TransacaoFinanceiraInterface $transacao, $jahTentada);
 

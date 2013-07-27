@@ -374,19 +374,6 @@ class GerenteGatewayPagamento implements GerenteGatewayPagamentoInterface
 
                 $resultado = $this->construirResultadoTransacaoFinanceira($transacao, ResultadoInterface::SITUACAO_FALHOU, $transacao->getJustificativaSituacao());
             }
-        } catch (GatewayPagamentoException $ex) {
-            $transacao->setSituacao(TransacaoFinanceiraInterface::SITUACAO_FALHOU);
-
-            $pagamento->setSituacao(PagamentoInterface::SITUACAO_FALHOU);
-            $pagamento->setValorAprovando(0.0);
-            $pagamento->setValorDepositando(0.0);
-
-            $instrucao->setValorAprovando($instrucao->getValorAprovando() - $valor);
-            $instrucao->setValorDepositando($instrucao->getValorDepositando() - $valor);
-
-            $this->dispararEventoMudancaSituacaoPagamento($pagamento, $situacaoAnterior);
-
-            $resultado = $this->construirResultadoTransacaoFinanceira($transacao, ResultadoInterface::SITUACAO_FALHOU, $transacao->getJustificativaSituacao());
         } catch (GatewayPagamentoBloqueadoException $blocked) {
             $transacao->setSituacao(TransacaoFinanceiraInterface::SITUACAO_PENDENTE);
 
@@ -403,6 +390,19 @@ class GerenteGatewayPagamento implements GerenteGatewayPagamentoInterface
             $resultado = $this->construirResultadoTransacaoFinanceira($transacao, ResultadoInterface::SITUACAO_PENDENTE, $justificativaSituacao);
             $resultado->setException($blocked);
             $resultado->setRecuperavel(true);
+        } catch (GatewayPagamentoException $ex) {
+            $transacao->setSituacao(TransacaoFinanceiraInterface::SITUACAO_FALHOU);
+
+            $pagamento->setSituacao(PagamentoInterface::SITUACAO_FALHOU);
+            $pagamento->setValorAprovando(0.0);
+            $pagamento->setValorDepositando(0.0);
+
+            $instrucao->setValorAprovando($instrucao->getValorAprovando() - $valor);
+            $instrucao->setValorDepositando($instrucao->getValorDepositando() - $valor);
+
+            $this->dispararEventoMudancaSituacaoPagamento($pagamento, $situacaoAnterior);
+
+            $resultado = $this->construirResultadoTransacaoFinanceira($transacao, ResultadoInterface::SITUACAO_FALHOU, $transacao->getJustificativaSituacao());
         }
 
 
