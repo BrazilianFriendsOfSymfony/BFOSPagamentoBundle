@@ -72,7 +72,6 @@
             <argument type="service" id="bfos_pagamento.assistente_pagamento" />
             <argument type="service" id="event_dispatcher" />
             <argument type="service" id="logger" />
-
             <argument>%bfos_pagamento.logar_interacao%</argument>
         </service>
 
