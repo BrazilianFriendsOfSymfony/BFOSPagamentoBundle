@@ -63,7 +63,8 @@ class GerenteGatewayPagamento implements GerenteGatewayPagamentoInterface
         RegistroGatewayPagamentoInterface $registro,
         AssistentePagamentoInterface $assistente = null,
         EventDispatcherInterface $dispatcher = null,
-        LoggerInterface $logger, $logarInteracao
+        LoggerInterface $logger,
+        $logarInteracao
     ) {
         $this->entityManager = $entityManager;
         $this->options = $options;
