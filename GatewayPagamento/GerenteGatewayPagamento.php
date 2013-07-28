@@ -42,6 +42,9 @@ class GerenteGatewayPagamento implements GerenteGatewayPagamentoInterface
     /** @var array $options */
     protected $options;
 
+    /** @var AssistentePagamentoInterface $assistente */
+    protected $assistente;
+
     /** @var EventDispatcherInterface $dispatcher */
     private $dispatcher;
 
@@ -58,60 +61,19 @@ class GerenteGatewayPagamento implements GerenteGatewayPagamentoInterface
         EntityManager $entityManager,
         $options = array(),
         RegistroGatewayPagamentoInterface $registro,
-        EventDispatcherInterface $dispatcher = null, LoggerInterface $logger, $logarInteracao
+        AssistentePagamentoInterface $assistente = null,
+        EventDispatcherInterface $dispatcher = null,
+        LoggerInterface $logger, $logarInteracao
     ) {
         $this->entityManager = $entityManager;
         $this->options = $options;
-        $this->dispatcher = $dispatcher;
         $this->registro = $registro;
+        $this->assistente = $assistente;
+        $this->dispatcher = $dispatcher;
         $this->logger = $logger;
         $this->logarInteracao = $logarInteracao;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function criarInstrucaoPagamento($gatewayPagamento = null, $valor = null)
-    {
-        $class = $this->options['instrucao_pagamento_class'];
-        /** @var InstrucaoPagamentoInterface $instrPagto */
-        $instrPagto = new $class();
-        $instrPagto->setValorTotal($valor);
-        $instrPagto->setGatewayPagamento($gatewayPagamento);
-        return $instrPagto;
-    }
-
-
-    /**
-     * @inheritdoc
-     */
-    public function criarPagamento($instrucaoPagamento, $valor = null)
-    {
-        /** @var InstrucaoPagamentoInterface $instrucaoPagamento */
-        if(is_numeric($instrucaoPagamento)){
-            $instrucaoPagamento = $this->getInstrucaoPagamento((int) $instrucaoPagamento, false);
-        }
-
-        if (InstrucaoPagamentoInterface::SITUACAO_VALIDA !== $instrucaoPagamento->getSituacao()) {
-            throw new InstrucaoPagamentoInvalidaException('A instrução de pagamento deve estar em situação SITUACAO_VALIDA.');
-        }
-
-        if (is_null($valor)) {
-            $valor = $instrucaoPagamento->getValorTotal() - $instrucaoPagamento->getValorDepositado();
-        }
-
-        $class = $this->options['pagamento_class'];
-        /** @var PagamentoInterface $pagamento */
-        $pagamento = new $class();
-        $pagamento->setInstrucaoPagamento($instrucaoPagamento);
-        $pagamento->setValorEsperado($valor);
-
-        $instrucaoPagamento->adicionarPagamento($pagamento);
-        $this->entityManager->persist($pagamento);
-        $this->entityManager->persist($instrucaoPagamento);
-
-        return $pagamento;
-    }
 
     /**
      * @inheritdoc
@@ -122,7 +84,7 @@ class GerenteGatewayPagamento implements GerenteGatewayPagamentoInterface
             $this->logger->info(' --- PAGAMENTO - GERENTE - aprova()');
         }
         if(is_numeric($pagamento)){
-            $pagamento = $this->getPagamento($pagamento);
+            $pagamento = $this->assistente->getPagamento($pagamento);
         }
 
         $instrucao = $pagamento->getInstrucaoPagamento();
@@ -280,7 +242,7 @@ class GerenteGatewayPagamento implements GerenteGatewayPagamentoInterface
     public function aprovaEDeposita($pagamento, $valor)
     {
         if(is_numeric($pagamento)){
-            $pagamento = $this->getPagamento($pagamento);
+            $pagamento = $this->assistente->getPagamento($pagamento);
         }
 
         /** @var InstrucaoPagamentoInterface $instrucao */
@@ -413,38 +375,6 @@ class GerenteGatewayPagamento implements GerenteGatewayPagamentoInterface
         return $resultado;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getInstrucaoPagamento($id, $mascararDadosSensiveis = true)
-    {
-        $instrPagto = $this->entityManager->getRepository($this->options['instrucao_pagamento_class'])->findOneBy(array('id' => $id));
-
-        if (null === $instrPagto) {
-            throw new InstrucaoPagamentoNaoEncontradaException(sprintf('O instrução de pagamento com o ID "%d" não foi encontrada.', $id));
-        }
-
-        if(true == $mascararDadosSensiveis){
-            // FIXME: mascarar os dados sensiveis
-        }
-
-        return $instrPagto;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getPagamento($id)
-    {
-        /** @var PagamentoInterface $pagamento */
-        $pagamento = $this->entityManager->getRepository($this->options['pagamento_class'])->find($id, LockMode::PESSIMISTIC_WRITE);
-
-        if (null === $pagamento) {
-            throw new PagamentoNaoEncontradoException(sprintf('The pagamento with ID "%d" was not found.', $id));
-        }
-
-        return $pagamento;
-    }
 
     /**
      * @return TransacaoFinanceiraInterface

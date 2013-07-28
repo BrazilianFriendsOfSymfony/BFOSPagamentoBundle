@@ -8,6 +8,7 @@
         <parameter key="bfos_pagamento.twig_extension.class">BFOS\PagamentoBundle\Twig\TwigExtension</parameter>
         <parameter key="bfos_pagamento.registro_gateway_pagamento.class">BFOS\PagamentoBundle\GatewayPagamento\Registro\RegistroGatewayPagamento</parameter>
         <parameter key="bfos_pagamento.gerente_gateway_pagamento.class">BFOS\PagamentoBundle\GatewayPagamento\GerenteGatewayPagamento</parameter>
+        <parameter key="bfos_pagamento.assistente_pagamento.class">BFOS\PagamentoBundle\GatewayPagamento\AssistentePagamento</parameter>
 
         <parameter key="bfos_pagamento.servico_de_criptografia.class">BFOS\PagamentoBundle\Criptografia\MCryptServicoDeCriptografia</parameter>
         <parameter key="bfos_pagamento.servico_de_criptografia.secret" />
@@ -47,6 +48,17 @@
         <service id="bfos_pagamento.registro_gateway_pagamento" class="%bfos_pagamento.registro_gateway_pagamento.class%">
         </service>
 
+        <!--Assistente Pagamento-->
+        <service id="bfos_pagamento.assistente_pagamento" class="%bfos_pagamento.assistente_pagamento.class%">
+            <argument id="doctrine.orm.default_entity_manager" type="service" />
+            <argument type="collection">
+                <argument key="resultado_class">%bfos_pagamento.resultado.class%</argument>
+                <argument key="instrucao_pagamento_class">%bfos_pagamento.instrucao_pagamento.class%</argument>
+                <argument key="pagamento_class">%bfos_pagamento.pagamento.class%</argument>
+                <argument key="transacao_financeira_class">%bfos_pagamento.transacao_financeira.class%</argument>
+            </argument>
+        </service>
+
         <!--Gerente Gateways-->
         <service id="bfos_pagamento.gerente_gateway_pagamento" class="%bfos_pagamento.gerente_gateway_pagamento.class%">
             <argument id="doctrine.orm.default_entity_manager" type="service" />
@@ -57,6 +69,7 @@
                 <argument key="transacao_financeira_class">%bfos_pagamento.transacao_financeira.class%</argument>
             </argument>
             <argument type="service" id="bfos_pagamento.registro_gateway_pagamento" />
+            <argument type="service" id="bfos_pagamento.assistente_pagamento" />
             <argument type="service" id="event_dispatcher" />
             <argument type="service" id="logger" />
             <argument>%bfos_pagamento.logar_interacao%</argument>

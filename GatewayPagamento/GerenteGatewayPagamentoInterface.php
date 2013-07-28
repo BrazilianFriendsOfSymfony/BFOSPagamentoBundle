@@ -20,28 +20,6 @@ use BFOS\PagamentoBundle\Model\PagamentoInterface;
 interface GerenteGatewayPagamentoInterface
 {
     /**
-     * Este método criará um objeto InstrucaoPagamento
-     * que poderá ser utilizado para realizar
-     *
-     * @param string|null $gatewayPagamento
-     * @param float|null $valor
-     *
-     * @return InstrucaoPagamentoInterface
-     */
-    public function criarInstrucaoPagamento($gatewayPagamento = null, $valor = null);
-
-    /**
-     * Este método criará um objeto Pagamento para a InstrucaoPagamento
-     * que poderá ser utilizado para realizar transações (aprovar e depositar)
-     *
-     * @param InstrucaoPagamentoInterface|integer $instrucaoPagamento
-     * @param float                               $valor
-     *
-     * @return PagamentoInterface
-     */
-    public function criarPagamento($instrucaoPagamento, $valor);
-
-    /**
      * Este método executa uma transação de aprovação de um pagamento.
      *
      * A implementação garante que:
@@ -152,24 +130,4 @@ interface GerenteGatewayPagamentoInterface
      */
     public function aprovaEDeposita($pagamento, $valor);
 
-    /**
-     * Retorna a InstrucaoPagamento pelo id.
-     *
-     * @param int  $id
-     * @param bool $mascararDadosSensiveis
-     *
-     * @throws Exception\InstrucaoPagamentoNaoEncontradaException
-     * @return InstrucaoPagamentoInterface
-     */
-    public function getInstrucaoPagamento($id, $mascararDadosSensiveis = true);
-
-    /**
-     * Retorna o Pagamento pelo id.
-     *
-     * @param int $id
-     *
-     * @return PagamentoInterface
-     * @throws PagamentoNaoEncontradoException
-     */
-    public function getPagamento($id);
 }
