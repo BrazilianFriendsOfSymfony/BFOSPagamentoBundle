@@ -61,8 +61,8 @@ class GerenteGatewayPagamento implements GerenteGatewayPagamentoInterface
         EntityManager $entityManager,
         $options = array(),
         RegistroGatewayPagamentoInterface $registro,
-        AssistentePagamentoInterface $assistente = null,
-        EventDispatcherInterface $dispatcher = null,
+        AssistentePagamentoInterface $assistente,
+        EventDispatcherInterface $dispatcher,
         LoggerInterface $logger,
         $logarInteracao
     ) {
