@@ -8,7 +8,7 @@
         <parameter key="bfos_pagamento.twig_extension.class">BFOS\PagamentoBundle\Twig\TwigExtension</parameter>
         <parameter key="bfos_pagamento.registro_gateway_pagamento.class">BFOS\PagamentoBundle\GatewayPagamento\Registro\RegistroGatewayPagamento</parameter>
         <parameter key="bfos_pagamento.gerente_gateway_pagamento.class">BFOS\PagamentoBundle\GatewayPagamento\GerenteGatewayPagamento</parameter>
-        <parameter key="bfos_pagamento.assistente_pagamento.class">BFOS\PagamentoBundle\GatewayPagamento\AssistentePagamento</parameter>
+        <parameter key="bfos_pagamento.assistente_pagamento.class">BFOS\PagamentoBundle\GatewayPagamento\Assistente\AssistentePagamento</parameter>
 
         <parameter key="bfos_pagamento.servico_de_criptografia.class">BFOS\PagamentoBundle\Criptografia\MCryptServicoDeCriptografia</parameter>
         <parameter key="bfos_pagamento.servico_de_criptografia.secret" />

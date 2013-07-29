@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace BFOS\PagamentoBundle\GatewayPagamento;
+namespace BFOS\PagamentoBundle\GatewayPagamento\Assistente;
 
 
 use BFOS\PagamentoBundle\Exception\PagamentoNaoEncontradoException;
-use BFOS\PagamentoBundle\GatewayPagamento\Exception\InstrucaoPagamentoInvalidaException;
+use BFOS\PagamentoBundle\GatewayPagamento\Exception\InstrucaoPagamentoNaoEncontradaException;
 use BFOS\PagamentoBundle\Model\InstrucaoPagamentoInterface;
 use BFOS\PagamentoBundle\Model\PagamentoInterface;
 
@@ -47,7 +47,7 @@ interface AssistentePagamentoInterface
      * @param int  $id
      * @param bool $mascararDadosSensiveis
      *
-     * @throws Exception\InstrucaoPagamentoNaoEncontradaException
+     * @throws InstrucaoPagamentoNaoEncontradaException
      * @return InstrucaoPagamentoInterface
      */
     public function getInstrucaoPagamento($id, $mascararDadosSensiveis = true);

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace BFOS\PagamentoBundle\GatewayPagamento;
+namespace BFOS\PagamentoBundle\GatewayPagamento\Assistente;
 
 
 use BFOS\PagamentoBundle\Exception\PagamentoNaoEncontradoException;

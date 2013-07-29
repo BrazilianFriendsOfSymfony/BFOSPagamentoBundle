@@ -14,23 +14,20 @@ namespace BFOS\PagamentoBundle\GatewayPagamento;
 
 use BFOS\PagamentoBundle\Event\PagamentoEvents;
 use BFOS\PagamentoBundle\Exception\PagamentoInvalidoException;
-use BFOS\PagamentoBundle\Exception\PagamentoNaoEncontradoException;
+use BFOS\PagamentoBundle\GatewayPagamento\Assistente\AssistentePagamentoInterface;
 use BFOS\PagamentoBundle\GatewayPagamento\Event\MudancaSituacaoPagamentoEvent;
 use BFOS\PagamentoBundle\GatewayPagamento\Exception\AcaoRequeridaException;
 use BFOS\PagamentoBundle\GatewayPagamento\Exception\GatewayPagamentoBloqueadoException;
 use BFOS\PagamentoBundle\GatewayPagamento\Exception\GatewayPagamentoException;
 use BFOS\PagamentoBundle\GatewayPagamento\Exception\GatewayPagamentoTimeoutException;
 use BFOS\PagamentoBundle\GatewayPagamento\Exception\InstrucaoPagamentoInvalidaException;
-use BFOS\PagamentoBundle\GatewayPagamento\Exception\InstrucaoPagamentoNaoEncontradaException;
 use BFOS\PagamentoBundle\GatewayPagamento\Registro\RegistroGatewayPagamentoInterface;
 use BFOS\PagamentoBundle\Model\InstrucaoPagamentoInterface;
 use BFOS\PagamentoBundle\Model\Pagamento;
 use BFOS\PagamentoBundle\Model\PagamentoInterface;
 use BFOS\PagamentoBundle\Model\TransacaoFinanceiraInterface;
 use BFOS\PagamentoBundle\Utils\Number;
-use Doctrine\DBAL\LockMode;
 use Doctrine\ORM\EntityManager;
-use Doctrine\Tests\Common\Annotations\Null;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpKernel\Log\LoggerInterface;
 
