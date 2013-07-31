@@ -240,10 +240,16 @@ class GerenteGatewayPagamento implements GerenteGatewayPagamentoInterface
     public function aprovaEDeposita($pagamento, $valor)
     {
         if ($this->logarInteracao) {
-            $this->logger->info(' --- PAGAMENTO - GERENTE - aprovaEDeposita()');
+            $this->logger->info('BFOSPAGAMENTO: GerenteGatewayPagamento.aprovaEDeposita() - INI');
         }
+
+        // localiza o Pagamento
         if(is_numeric($pagamento)){
+            // carrega o Pagamento
             $pagamento = $this->assistente->getPagamento($pagamento);
+        }
+        if(!$pagamento){
+            throw new \Exception('O pagamento especificado não foi encontrado.');
         }
 
         /** @var InstrucaoPagamentoInterface $instrucao */
@@ -251,7 +257,7 @@ class GerenteGatewayPagamento implements GerenteGatewayPagamentoInterface
 
         if (InstrucaoPagamentoInterface::SITUACAO_VALIDA !== $instrucao->getSituacao()) {
             if ($this->logarInteracao) {
-                $this->logger->info(' --- SAIDA 1 - PAGAMENTO - GERENTE - aprovaEDeposita()');
+                $this->logger->info(' --- SAIDA 1 - GerenteGatewayPagamento.aprovaEDeposita()');
             }
             throw new InstrucaoPagamentoInvalidaException('A situação da InstrucaoPagamento deve ser VALIDA.');
         }
@@ -259,22 +265,26 @@ class GerenteGatewayPagamento implements GerenteGatewayPagamentoInterface
         $situacaoPagamento = $pagamento->getSituacao();
         if (PagamentoInterface::SITUACAO_NOVO === $situacaoPagamento) {
             if ($this->logarInteracao) {
-                $this->logger->info(' --- Situacao do pagto é SITUACAO_NOVO - aprovaEDeposita()');
+                $this->logger->info(' --- Situacao do pagto é SITUACAO_NOVO - GerenteGatewayPagamento.aprovaEDeposita()');
             }
             if ($instrucao->temTransacaoPendente()) {
                 if ($this->logarInteracao) {
-                    $this->logger->info(' --- SAIDA 2 - PAGAMENTO - GERENTE - aprovaEDeposita()');
+                    $this->logger->info(' --- SAIDA 2 - GerenteGatewayPagamento.aprovaEDeposita()');
                 }
                 throw new InstrucaoPagamentoInvalidaException('A InstrucaoPagamento pode ter somente uma transacao pendente.');
             }
 
             if (1 === Number::compare($valor, $pagamento->getValorEsperado())) {
                 if ($this->logarInteracao) {
-                    $this->logger->info(' --- SAIDA 3 - PAGAMENTO - GERENTE - aprovaEDeposita()');
+                    $this->logger->info(' --- SAIDA 3 - GerenteGatewayPagamento.aprovaEDeposita()');
                 }
                 throw new \InvalidArgumentException('$valor não deve ser maior que o valor esperado do pagamento.');
             }
 
+            if ($this->logarInteracao) {
+                $this->logger->info(' --- Criando TransacaoFinanceira do tipo TIPO_TRANSACAO_APROVACAO_E_DEPOSITO - GerenteGatewayPagamento.aprovaEDeposita()');
+                $this->logger->info(' --- Situação é SITUACAO_APROVANDO da TransacaoFinanceira - GerenteGatewayPagamento.aprovaEDeposita()');
+            }
             $transacao = $this->criarTransacaoFinanceira();
             $transacao->setTipoTransacao(TransacaoFinanceiraInterface::TIPO_TRANSACAO_APROVACAO_E_DEPOSITO);
             $transacao->setPagamento($pagamento);
@@ -293,18 +303,18 @@ class GerenteGatewayPagamento implements GerenteGatewayPagamentoInterface
             $retry = false;
         } else if (PagamentoInterface::SITUACAO_APROVANDO === $situacaoPagamento) {
             if ($this->logarInteracao) {
-                $this->logger->info(' --- Situacao do pagto é SITUACAO_APROVANDO - aprovaEDeposita()');
+                $this->logger->info(' --- Situacao do pagto é SITUACAO_APROVANDO - GerenteGatewayPagamento.aprovaEDeposita()');
             }
             if (0 !== Number::compare($valor, $pagamento->getValorAprovando())) {
                 if ($this->logarInteracao) {
-                    $this->logger->info(' --- SAIDA 4 - PAGAMENTO - GERENTE - aprovaEDeposita()');
+                    $this->logger->info(' --- SAIDA 4 - GerenteGatewayPagamento.aprovaEDeposita()');
                 }
                 throw new \InvalidArgumentException('$valor deve ser igual ao valor aprovando do Pagamento.');
             }
 
             if (0 !== Number::compare($valor, $pagamento->getValorDepositando())) {
                 if ($this->logarInteracao) {
-                    $this->logger->info(' --- SAIDA 5 - PAGAMENTO - GERENTE - aprovaEDeposita()');
+                    $this->logger->info(' --- SAIDA 5 - GerenteGatewayPagamento.aprovaEDeposita()');
                 }
                 throw new \InvalidArgumentException('$valor deve ser igual ao valor depositando do Pagamento.');
             }
@@ -314,7 +324,7 @@ class GerenteGatewayPagamento implements GerenteGatewayPagamentoInterface
             $retry = true;
         } else {
             if ($this->logarInteracao) {
-                $this->logger->info(' --- SAIDA 6 - PAGAMENTO - GERENTE - aprovaEDeposita()');
+                $this->logger->info(' --- SAIDA 6 - GerenteGatewayPagamento.aprovaEDeposita()');
             }
             throw new PagamentoInvalidoException('Situacao do Pagamento deve ser NOVO ou APROVANDO.');
         }
@@ -323,7 +333,7 @@ class GerenteGatewayPagamento implements GerenteGatewayPagamentoInterface
         $gateway = $this->registro->get($instrucao->getGatewayPagamento());
         if(!$gateway){
             if ($this->logarInteracao) {
-                $this->logger->info(' --- SAIDA 7 - PAGAMENTO - GERENTE - aprovaEDeposita()');
+                $this->logger->info(' --- SAIDA 7 - GerenteGatewayPagamento.aprovaEDeposita()');
             }
             throw new \InvalidArgumentException(sprintf('O gateway de pagamento nao foi encontrado: %s', $instrucao->getGatewayPagamento()));
         }
@@ -334,7 +344,7 @@ class GerenteGatewayPagamento implements GerenteGatewayPagamentoInterface
 
             if (GatewayPagamentoInterface::RESPOSTA_CODIGO_SUCESSO === $transacao->getCodigoResposta()) {
                 if ($this->logarInteracao) {
-                    $this->logger->info(' --- Gateway aprovouEDepositou com resposta RESPOSTA_CODIGO_SUCESSO - aprovaEDeposita()');
+                    $this->logger->info(' --- Gateway aprovouEDepositou com resposta RESPOSTA_CODIGO_SUCESSO - GerenteGatewayPagamento.aprovaEDeposita()');
                 }
                 $transacao->setSituacao(TransacaoFinanceiraInterface::SITUACAO_CONCLUIDA_COM_SUCCESSO);
                 $valorProcessado = $transacao->getValorProcessado();
@@ -355,7 +365,7 @@ class GerenteGatewayPagamento implements GerenteGatewayPagamentoInterface
                 $resultado = $this->construirResultadoTransacaoFinanceira($transacao, ResultadoInterface::SITUACAO_SUCESSO, GatewayPagamentoInterface::JUSTIFICATIVA_SUCESSO);
             } else {
                 if ($this->logarInteracao) {
-                    $this->logger->info(' --- Gateway aprovouEDepositou com resposta DIFERENTE de RESPOSTA_CODIGO_SUCESSO - aprovaEDeposita()');
+                    $this->logger->info(' --- Gateway aprovouEDepositou com resposta DIFERENTE de RESPOSTA_CODIGO_SUCESSO - GerenteGatewayPagamento.aprovaEDeposita()');
                 }
                 $transacao->setSituacao(TransacaoFinanceiraInterface::SITUACAO_FALHOU);
 
@@ -372,7 +382,7 @@ class GerenteGatewayPagamento implements GerenteGatewayPagamentoInterface
             }
         } catch (GatewayPagamentoBloqueadoException $blocked) {
             if ($this->logarInteracao) {
-                $this->logger->info(' --- catched GatewayPagamentoBloqueadoException');
+                $this->logger->info(' --- catched GatewayPagamentoBloqueadoException - GerenteGatewayPagamento.aprovaEDeposita()');
             }
             $transacao->setSituacao(TransacaoFinanceiraInterface::SITUACAO_PENDENTE);
 
@@ -391,7 +401,7 @@ class GerenteGatewayPagamento implements GerenteGatewayPagamentoInterface
             $resultado->setRecuperavel(true);
         } catch (GatewayPagamentoException $ex) {
             if ($this->logarInteracao) {
-                $this->logger->info(' --- catched GatewayPagamentoException');
+                $this->logger->info(' --- catched GatewayPagamentoException - GerenteGatewayPagamento.aprovaEDeposita()');
             }
             $transacao->setSituacao(TransacaoFinanceiraInterface::SITUACAO_FALHOU);
 
@@ -413,7 +423,7 @@ class GerenteGatewayPagamento implements GerenteGatewayPagamentoInterface
         $this->entityManager->persist($resultado->getInstrucaoPagamento());
 
         if ($this->logarInteracao) {
-            $this->logger->info(' --- FIM - PAGAMENTO - GERENTE - aprovaEDeposita()');
+            $this->logger->info('BFOSPAGAMENTO: GerenteGatewayPagamento.aprovaEDeposita() - FIM');
         }
         return $resultado;
     }
