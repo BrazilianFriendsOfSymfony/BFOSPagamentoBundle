@@ -25,7 +25,7 @@ class InstrucaoPagamentoTest extends WebTestCase
     public function testPersisteERecuperaComSucesso()
     {
         $instrPagto = new InstrucaoPagamento();
-        $instrPagto->setGatewayPagamento('pagseguro');
+//        $instrPagto->setGatewayPagamento('pagseguro');
         $instrPagto->getDadosAdicionais()->adicionar('pagseguro_emailVendedor', 'teste@gmail.com');
         $instrPagto->getDadosAdicionais()->adicionar('pagseguro_tokenVendedor', 'TESTEUTndke&$20dksdsf', true);
         $instrPagto->getDadosAdicionais()->adicionar('pagseguro_notificationUrl', 'http://www.site.com.br/pagseguro/pedido/1/notificacao');
@@ -35,7 +35,7 @@ class InstrucaoPagamentoTest extends WebTestCase
 
         $this->manager->flush($instrPagto);
 
-        $this->assertEquals('pagseguro', $instrPagto->getGatewayPagamento());
+//        $this->assertEquals('pagseguro', $instrPagto->getGatewayPagamento());
         $this->assertEquals('teste@gmail.com', $instrPagto->getDadosAdicionais()->obter('pagseguro_emailVendedor'));
     }
 
