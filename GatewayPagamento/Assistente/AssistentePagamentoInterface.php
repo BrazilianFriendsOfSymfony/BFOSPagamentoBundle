@@ -23,12 +23,11 @@ interface AssistentePagamentoInterface
      * Este método criará um objeto InstrucaoPagamento
      * que poderá ser utilizado para realizar
      *
-     * @param string|null $gatewayPagamento
      * @param float|null $valor
      *
      * @return InstrucaoPagamentoInterface
      */
-    public function criarInstrucaoPagamento($gatewayPagamento = null, $valor = null);
+    public function criarInstrucaoPagamento($valor = null);
 
     /**
      * Este método criará um objeto Pagamento para a InstrucaoPagamento
@@ -36,10 +35,11 @@ interface AssistentePagamentoInterface
      *
      * @param InstrucaoPagamentoInterface|integer $instrucaoPagamento
      * @param float                               $valor
+     * @param string                              $gatewayPagamento
      *
      * @return PagamentoInterface
      */
-    public function criarPagamento($instrucaoPagamento, $valor);
+    public function criarPagamento($instrucaoPagamento, $valor, $gatewayPagamento);
 
     /**
      * Retorna a InstrucaoPagamento pelo id.

@@ -38,13 +38,13 @@ class AssistentePagamento implements AssistentePagamentoInterface
     /**
      * @inheritdoc
      */
-    public function criarInstrucaoPagamento($gatewayPagamento = null, $valor = null)
+    public function criarInstrucaoPagamento($valor = null)
     {
         $class = $this->options['instrucao_pagamento_class'];
         /** @var InstrucaoPagamentoInterface $instrPagto */
         $instrPagto = new $class();
         $instrPagto->setValorTotal($valor);
-        $instrPagto->setGatewayPagamento($gatewayPagamento);
+//        $instrPagto->setGatewayPagamento($gatewayPagamento);
         return $instrPagto;
     }
 
@@ -52,7 +52,7 @@ class AssistentePagamento implements AssistentePagamentoInterface
     /**
      * @inheritdoc
      */
-    public function criarPagamento($instrucaoPagamento, $valor = null)
+    public function criarPagamento($instrucaoPagamento, $valor, $gatewayPagamento)
     {
         /** @var InstrucaoPagamentoInterface $instrucaoPagamento */
         if(is_numeric($instrucaoPagamento)){
@@ -72,6 +72,7 @@ class AssistentePagamento implements AssistentePagamentoInterface
         $pagamento = new $class();
         $pagamento->setInstrucaoPagamento($instrucaoPagamento);
         $pagamento->setValorEsperado($valor);
+        $pagamento->setGatewayPagamento($gatewayPagamento);
 
         $instrucaoPagamento->adicionarPagamento($pagamento);
         $this->entityManager->persist($pagamento);
