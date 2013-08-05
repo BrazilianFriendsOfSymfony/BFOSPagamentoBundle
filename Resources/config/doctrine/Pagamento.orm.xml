@@ -9,6 +9,7 @@
         <id name="id" type="integer"><generator strategy="AUTO"/></id>
 
         <field name="situacao" type="smallint" nullable="false" />
+        <field name="gatewayPagamento" type="string" length="255" nullable="false" />
 
         <field name="valorAprovado" column="valor_aprovado" type="decimal" scale="5" />
         <field name="valorAprovando" column="valor_aprovando" type="decimal" scale="5" />

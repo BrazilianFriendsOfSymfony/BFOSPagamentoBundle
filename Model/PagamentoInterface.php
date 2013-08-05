@@ -40,7 +40,37 @@ interface PagamentoInterface
      */
     public function setId($id);
 
+    /**
+     * Retorna o identificador do meio de pagamento utilizado.
+     *
+     * @return string
+     */
+    public function getGatewayPagamento();
+
+    /**
+     * Define o identificador do meio de pagamento utilizado.
+     *
+     * @param string $gatewayPagamento
+     *
+     * @return InstrucaoPagamentoInterface
+     */
+    public function setGatewayPagamento($gatewayPagamento);
+
+    /**
+     * Retorna o total do valor já aprovado.
+     *
+     * @return float
+     */
     public function getValorAprovado();
+
+    /**
+     * Define o total do valor já aprovado.
+     *
+     * @param float $valorAprovado
+     *
+     * @return PagamentoInterface
+     */
+    public function setValorAprovado($valorAprovado);
 
     /**
      * Retorna a transação que aprovou o pagamento.
@@ -49,24 +79,58 @@ interface PagamentoInterface
      */
     public function getTransacaoDeAprovacao();
 
+    /**
+     * Retorna o total do valor tentando ser aprovado.
+     *
+     * @return float
+     */
     public function getValorAprovando();
 
+    /**
+     * Define o total do valor tentando ser aprovado.
+     *
+     * @param float $valorAprovando
+     *
+     * @return PagamentoInterface
+     */
+    public function setValorAprovando($valorAprovando);
+
+    /**
+     * Retorna o total do valor já depositado.
+     *
+     * @return float
+     */
     public function getValorDepositado();
 
+    /**
+     * Define o total do valor já depositado.
+     *
+     * @param float $valorDepositado
+     *
+     * @return PagamentoInterface
+     */
+    public function setValorDepositado($valorDepositado);
+
+    /**
+     * Retorna o valor tentando ser depositado.
+     *
+     * @return float
+     */
     public function getValorDepositando();
+
+    /**
+     * Define o valor tentando ser depositado.
+     *
+     * @param float $valorDepositando
+     *
+     * @return PagamentoInterface
+     */
+    public function setValorDepositando($valorDepositando);
 
     /**
      * @return Collection
      */
     public function getTransacoesDeDeposito();
-
-    public function setValorAprovado($valor);
-
-    public function setValorAprovando($valor);
-
-    public function setValorDepositado($valor);
-
-    public function setValorDepositando($valor);
 
     /**
      * Data de vencimento para concluir o pagamento.
@@ -135,6 +199,11 @@ interface PagamentoInterface
      */
     public function setValorEsperado($valor);
 
+    /**
+     * Indica que se alguma transação pendente.
+     *
+     * @return boolean
+     */
     public function temTransacaoPendente();
 
     /**

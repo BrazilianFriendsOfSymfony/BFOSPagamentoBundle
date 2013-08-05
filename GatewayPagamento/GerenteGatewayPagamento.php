@@ -143,7 +143,7 @@ class GerenteGatewayPagamento implements GerenteGatewayPagamentoInterface
             throw new PagamentoInvalidoException('A situacao do Pagamento deve ser SITUACAO_NOVO ou SITUACAO_APROVANDO.');
         }
 
-        $gateway = $this->registro->get($instrucao->getGatewayPagamento());
+        $gateway = $this->registro->get($pagamento->getGatewayPagamento());
         $situacaoAnterior = $pagamento->getSituacao();
 
         try {
@@ -330,12 +330,12 @@ class GerenteGatewayPagamento implements GerenteGatewayPagamentoInterface
         }
 
         /** @var GatewayPagamentoInterface $gateway */
-        $gateway = $this->registro->get($instrucao->getGatewayPagamento());
+        $gateway = $this->registro->get($pagamento->getGatewayPagamento());
         if(!$gateway){
             if ($this->logarInteracao) {
                 $this->logger->info(' --- SAIDA 7 - GerenteGatewayPagamento.aprovaEDeposita()');
             }
-            throw new \InvalidArgumentException(sprintf('O gateway de pagamento nao foi encontrado: %s', $instrucao->getGatewayPagamento()));
+            throw new \InvalidArgumentException(sprintf('O gateway de pagamento nao foi encontrado: %s', $pagamento->getGatewayPagamento()));
         }
         $situacaoAnterior = $pagamento->getSituacao();
 

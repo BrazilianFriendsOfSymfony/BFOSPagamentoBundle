@@ -18,6 +18,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 class Pagamento implements PagamentoInterface
 {
     protected $id;
+    protected $gatewayPagamento;
     protected $valorAprovado;
     protected $valorAprovando;
     protected $valorDepositando;
@@ -76,6 +77,23 @@ class Pagamento implements PagamentoInterface
     {
         $this->id = $id;
         return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setGatewayPagamento($gatewayPagamento)
+    {
+        $this->gatewayPagamento = $gatewayPagamento;
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getGatewayPagamento()
+    {
+        return $this->gatewayPagamento;
     }
 
     /**

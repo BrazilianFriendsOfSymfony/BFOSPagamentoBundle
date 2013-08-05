@@ -21,7 +21,6 @@ class InstrucaoPagamento implements InstrucaoPagamentoInterface
     protected $id;
     protected $situacao;
     protected $referencia;
-    protected $gatewayPagamento;
     protected $valorTotal;
     protected $valorAprovando;
     protected $valorAprovado;
@@ -70,25 +69,6 @@ class InstrucaoPagamento implements InstrucaoPagamentoInterface
     public function getId()
     {
         return $this->id;
-    }
-
-
-    /**
-     * @param string $gatewayPagamento
-     * @return InstrucaoPagamentoInterface
-     */
-    public function setGatewayPagamento($gatewayPagamento)
-    {
-        $this->gatewayPagamento = $gatewayPagamento;
-        return $this;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getGatewayPagamento()
-    {
-        return $this->gatewayPagamento;
     }
 
     /**

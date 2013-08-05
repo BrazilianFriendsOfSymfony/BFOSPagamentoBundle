@@ -9,7 +9,6 @@
         <id name="id" type="integer"><generator strategy="AUTO"/></id>
 
         <field name="situacao" type="smallint" nullable="false" />
-        <field name="gatewayPagamento" type="string" length="255" nullable="false" />
         <field name="referencia" type="string" length="255" nullable="true" />
         <field name="valorTotal" type="decimal" scale="5" nullable="false" />
 

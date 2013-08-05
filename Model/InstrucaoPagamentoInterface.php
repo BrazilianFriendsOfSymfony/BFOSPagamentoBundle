@@ -82,22 +82,6 @@ interface InstrucaoPagamentoInterface
     public function setReferencia($referencia);
 
     /**
-     * Retorna o identificador do meio de pagamento utilizado.
-     *
-     * @return string
-     */
-    public function getGatewayPagamento();
-
-    /**
-     * Define o identificador do meio de pagamento utilizado.
-     *
-     * @param string $gatewayPagamento
-     *
-     * @return InstrucaoPagamentoInterface
-     */
-    public function setGatewayPagamento($gatewayPagamento);
-
-    /**
      * Valor total que deverá ser recebido.
      *
      * @return float
