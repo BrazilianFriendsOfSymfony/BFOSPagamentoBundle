@@ -1,5 +1,5 @@
 <div class="instrucao-pagamento">
-    Gateway: {{ instrucaoPagamento.gatewayPagamento }} [{{ instrucaoPagamento.id }}]
+    ID: {{ instrucaoPagamento.id }}
     <br/>
     Situação: {{ instrucaoPagamento.situacaoLabel }} [{{ instrucaoPagamento.situacao }}]
     <br/>
@@ -13,6 +13,8 @@
             {% for pagamento in instrucaoPagamento.pagamentos %}
                 <li class="pagamento">
                     <div class="info">
+                        Gateway: {{ instrucaoPagamento.gatewayPagamento }} [id: {{ pagamento.id }}]
+                        <br/>
                         Situação: {{ pagamento.situacaoLabel }}
                         <br/>
                         Valor esperado: R$ {{ pagamento.valorEsperado|number_format(2,',', '.') }}
