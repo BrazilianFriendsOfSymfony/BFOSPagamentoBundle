@@ -62,6 +62,10 @@ class DadosAdicionaisPagamentoType extends ObjectType
 
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
+        if ($value === '') {
+            $value = null;
+        }
+
         $data = parent::convertToPHPValue($value, $platform);
 
         if (null === $data) {
