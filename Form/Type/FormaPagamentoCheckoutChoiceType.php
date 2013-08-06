@@ -12,6 +12,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * Class GatewayPagamentoCheckoutChoiceType
@@ -71,17 +72,19 @@ class FormaPagamentoCheckoutChoiceType extends AbstractType
             new ConstrutorFormFormaPagamentoCheckoutChoiceListener($this->registro, $this->gerente, $builder->getFormFactory(), $configuracoes)
         );
         $builder
-            ->add(
-                    'formaPagamentoId',
-                    'choice',
-                    array(
-                        'label' => 'bfos_pagamento.form.gateway',
-                        'choices' => $choices,
-                        'expanded' => true,
-                        'attr' => array('class' => 'js_opcao_forma_pagamento')
+        ->add(
+                'formaPagamentoId',
+                'choice',
+                array(
+                    'label'       => 'bfos_pagamento.form.gateway',
+                    'choices'     => $choices,
+                    'expanded'    => true,
+                    'attr'        => array('class' => 'js_opcao_forma_pagamento'),
+                    'constraints' => array(
+                        new NotBlank()
                     )
                 )
-        ;
+            );
 
         $prototypes = array();
         $gateways = $this->registro->getTodos();
