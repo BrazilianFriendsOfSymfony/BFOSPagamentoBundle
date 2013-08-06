@@ -9,24 +9,24 @@
             {% endif %}
         {% endfor %}
     </tr>
-{% for parcela,opcao in opcoesParcelamento %}
+{% for parcela,opcao in opcoesParcelamento if opcao.parcelas != 1  %}
     {% if loop.index % colunas == 1 %}
     <tr>
     {% endif %}
     <td>
-        {{ opcao.parcelas }}x iguais
+       {{ opcao.parcelas }}x iguais
     </td>
     <td>
-        R$ {{ opcao.valor|number_format(2,',', '.') }}
+    R$ {{ opcao.valor|number_format(2,',', '.') }}
     </td>
     {% if mostrarJuros == true %}
-    <td>
-        {% if opcao.juros is defined %}
-            {{ opcao.juros }}
-        {% else %}
-            sem juros
-        {% endif %}
-    </td>
+        <td>
+            {% if opcao.juros is defined %}
+                {{ opcao.juros }}
+            {% else %}
+                sem juros
+            {% endif %}
+        </td>
     {% endif %}
     {% if loop.index % colunas == 0 %}
     </tr>
